@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="font-extrabold tracking-tight text-gray-900 text-4xl mt-8 lg:mt-0 sm:text-5xl lg:text-6xl">Programming projects</h1>
+<p class="mt-6 text-xl leading-8 text-gray-500">
+  I learned to program as a hobby and I dig it. I'm most comfortable with Python and some web stuff (HTML/CSS/JS).
+</p>
+<p class="mt-6 text-xl leading-8 text-gray-500">Below are some of my projects on GitHub:</p>
+<ul class="flex flex-wrap py-8">
+  {%- for repo in content.repos %}
+  <li class="py-2 w-full md:odd:pr-6 md:w-1/2">
+    <article class="bg-white duration-300 flex flex-col flex-wrap h-full p-4 rounded-lg shadow-xl transform transition hover:scale-105 hover:shadow-2xl md:p-6">
+      <h2 class="mb-4"><a class="github-link font-medium leading-8 text-2xl md:leading-10 md:text-3xl lg:text-4xl text-black hover:underline" href="{{ repo.url }}" rel="noopener noreferrer" target="_blank" onclick="this.blur();">{{ repo.name }}</a></h2>
+      <p class="flex-grow leading-7 mb-4 text-gray-600 text-md md:text-lg lg:text-xl md:leading-7 md:mb6">{{ repo.description }}</p>
+      <ul class="flex flex-wrap leading-7 text-gray-500 text-sm md:leading-7">
+        <li class="inline-flex mr-2 sm:mr-3">
+          <span class="iconify github-stars github-icon" data-icon="octicon:star-16" data-inline="true"></span>
+          {{ repo.stars }}
+        </li>
+        <li class="inline-flex mr-2 sm:mr-3">
+          <span class="iconify github-forks github-icon" data-icon="octicon:repo-forked-16" data-inline="true"></span>
+          {{ repo.forks }}
+        </li>
+      </ul>
+      <ul class="flex flex-wrap leading-7 text-gray-500 text-sm md:leading-7">
+        {%- for lang in repo.languages %}
+        <li class="language mr-3" style="--lang-color: {{ lang.color }}">{{ lang.name }}</li>
+        {%- endfor %}
+      </ul>
+    </article>
+  </li>
+  {%- endfor %}
+</ul>
+{% endblock content %}

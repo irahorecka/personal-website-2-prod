@@ -1,0 +1,62 @@
+[
+    {
+        "request": "GET",
+        "endpt": "/{site}",
+        "desc": [
+            "Search for housing within a Craigslist <a href='https://www.craigslist.org/about/sites' class='text-blue-800 hover:underline' rel='noopener noreferrer' target='_blank' onclick='this.blur();'>site</a>.",
+            "Every site has a landing page and the URL's subdomain is the site's key. For example, use <span class='font-mono text-sm'>sfbay</span> for https://sfbay.craigslist.org/ and <span class='font-mono text-sm'>monterey</span> for https://monterey.craigslist.org/."
+        ],
+        "example": {
+            "desc": "Find 100 posts in the SF Bay Area with a minimum price of $1200.",
+            "code": "api.irahorecka.com/housing/sfbay?limit=100&min_price=1200"
+            },
+        "warning": {
+            "title": "Notice",
+            "body": "Only the SF Bay Area is supported at the moment. Use: <span class='font-mono text-sm'>sfbay</span>"
+        },
+        "params": [
+            {"name": "id", "desc": "<int> Craigslist post ID."},
+            {"name": "limit", "desc": "<int> Number of results per request. Default is 50."},
+            {"name": "neighborhood", "desc": "<str> Craigslist neighborhood within parent region."},
+            {"name": "housing_type", "desc": "<str> Housing type, e.g. 'apartment'."},
+            {"name": "laundry", "desc": "<str> Laundry amenities, e.g. 'laundry in bldg'."},
+            {"name": "parking", "desc": "<str> Parking amenities, e.g. 'carport'."},
+            {"name": "min_bedrooms", "desc": "<int> Minimum bedrooms"},
+            {"name": "max_bedrooms", "desc": "<int> Maximum bedrooms"},
+            {"name": "min_ft2", "desc": "<int> Minimum area (ft2)"},
+            {"name": "max_ft2", "desc": "<int> Maximum area (ft2)"},
+            {"name": "min_price", "desc": "<int> Minimum price (USD)"},
+            {"name": "max_price", "desc": "<int> Maximum price (USD)"}
+        ]
+    },
+    {
+        "request": "GET",
+        "endpt": "/{site}/{area}",
+        "desc": [
+            "Search for housing within a Craigslist area. An area is a sub-region within a <a href='https://www.craigslist.org/about/sites' class='text-blue-800 hover:underline' rel='noopener noreferrer' target='_blank' onclick='this.blur();'>site</a>. If you look at the <a href='https://sfbay.craigslist.org/' class='text-blue-800 hover:underline' rel='noopener noreferrer' target='_blank' onclick='this.blur();'>SF Bay Area Craigslist page</a>, you'll notice the hyperlinks <span class='font-mono text-sm'>sfc</span>, <span class='font-mono text-sm'>sby</span>, <span class='font-mono text-sm'>eby</span>, <span class='font-mono text-sm'>pen</span>, <span class='font-mono text-sm'>nby</span>, and <span class='font-mono text-sm'>scz</span> at the top.",
+            "If such hyperlinks are present in a Craigslist landing page, you may use these keys to further narrow your query by location. Note: not all sites have areas."
+        ],
+        "example": {
+            "desc": "Find posts with carport parking in the East Bay Area.",
+            "code": "api.irahorecka.com/housing/sfbay/eby?parking=carport"
+            },
+        "warning": {
+            "title": "Notice",
+            "body": "Only the SF Bay Area is supported at the moment. Use: <span class='font-mono text-sm'>sfbay/eby, sfbay/nby, sfbay/pen, sfbay/sby, sfbay/scz, sfbay/sfc</span>"
+        },
+        "params": [
+            {"name": "id", "desc": "<int> Craigslist post ID."},
+            {"name": "limit", "desc": "<int> Number of results per request. Default is 50."},
+            {"name": "neighborhood", "desc": "<str> Craigslist neighborhood within parent region."},
+            {"name": "housing_type", "desc": "<str> Housing type, e.g. 'apartment'."},
+            {"name": "laundry", "desc": "<str> Laundry amenities, e.g. 'laundry in bldg'."},
+            {"name": "parking", "desc": "<str> Parking amenities, e.g. 'carport'."},
+            {"name": "min_bedrooms", "desc": "<int> Minimum bedrooms"},
+            {"name": "max_bedrooms", "desc": "<int> Maximum bedrooms"},
+            {"name": "min_ft2", "desc": "<int> Minimum area (ft2)"},
+            {"name": "max_ft2", "desc": "<int> Maximum area (ft2)"},
+            {"name": "min_price", "desc": "<int> Minimum price (USD)"},
+            {"name": "max_price", "desc": "<int> Maximum price (USD)"}
+        ]
+    }
+]

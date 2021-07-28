@@ -1,0 +1,12 @@
+PyYaml
+PyGithub
+flask
+flask_assets
+flask_cors
+flask_sqlalchemy
+cerberus
+pycraigslist
+numpy
+requests
+psycopg2-binary
+uwsgi

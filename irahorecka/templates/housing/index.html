@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block js %}
+<script defer src="{{ url_for('static', filename="external/htmx-1.5.0.min.js") }}"></script>
+{% endblock js %}
+{% block content %}
+<h1 class="font-extrabold tracking-tight text-gray-900 text-4xl mt-8 lg:mt-0 sm:text-5xl lg:text-6xl">Housing</h1>
+<p class="mt-6 text-xl leading-8 text-gray-500">
+  There’s plenty of housing offered on Craigslist, but the browsing experience is no fun. Try this tool to find great housing deals for your next move.
+  This is also available for developers, check out the
+  <a href="{{ url_for('housing.api_docs') }}" class="text-blue-700 hover:underline">API docs</a>.
+</p>
+<p class="mt-6 text-xl leading-8 text-gray-500">
+  The current scope is in the SF Bay Area. Email me if you'd like to see a new location. 🏘️
+</p>
+<div class="pt-12 sm:pt-16">
+  <h2 class="text-2xl font-bold">SF Bay Area</h2>
+  <form class="mt-8 w-full">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <label class="block">
+        <span class="text-gray-700">Area</span>
+        <select name="area" id="area" hx-post="/housing/neighborhoods" hx-trigger="change, load" hx-target="#neighborhood" class="block w-full p-2 mt-1 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0">
+          <option>-</option>
+          <option>East Bay Area</option>
+          <option>North Bay / Marin</option>
+          <option>Peninsula</option>
+          <option>City of San Francisco</option>
+          <option>Santa Cruz Co</option>
+          <option>South Bay Area</option>
+        </select>
+      </label>
+      <label class="block">
+      <span class="text-gray-700">Neighborhood</span>
+      <select name="neighborhood" id="neighborhood" class="block w-full p-2 mt-1 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0">
+      {% include 'housing/neighborhoods.html' %}
+      </select>
+      </label>
+      <label class="block">
+        <span class="text-gray-700">Price (USD)</span>
+        <div class="mt-1 flex flex-row space-x-3">
+          <input name="min_price" type="number" min="1" max="100000" step="1" class="w-1/2 mb-0 p-2 block rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0" placeholder="Min">
+          <p class="w-1/16 left-0 m-auto">to</p>
+          <input name="max_price" type="number" min="1" max="100000" step="1" class="w-1/2 mt-0 p-2 block rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0" placeholder="Max">
+        </div>
+      </label>
+      <div class="flex flex-row space-x-2">
+        <input type="submit" id="query" value="Search" hx-post="/housing/query" hx-trigger="click" hx-target="#table" class="w-8/12 bg-blue-500 hover:bg-blue-700 focus:outline-none text-white font-bold py-2 px-4 rounded-full"></input>
+        <input type="submit" id="query-score" value="Score" hx-post="/housing/query_score" hx-trigger="click" hx-target="#table" class="w-4/12 bg-green-500 hover:bg-green-700 focus:outline-none text-white font-bold py-2 px-4 rounded-full"></input>
+      </div>
+      <div id="loadingDiv" class="lds-dual-ring"></div>
+    </div>
+  </form>
+  <div name="table" id="table">
+  {% if post is mapping %}
+    {% include 'housing/table.html' %}
+  {% endif %}
+  </div>
+</div>
+{% endblock content %}
+{% block script %}
+<script type="text/javascript">
+var $loading = $('#loadingDiv').hide();
+$(document).ready(function() {
+  $("#query, #query-score").click(function(e) {
+    e.preventDefault();
+    var data = $(this).serialize();
+    var url = $(this).attr('hx-post');
+    // Will not display if screen size is for mobile / small.
+    if ($(window).width() >= 768) {
+      $loading.fadeIn(150);
+      $.post(url, data, function(response){
+          $loading.fadeOut(150);
+      });
+    };
+  });
+});
+</script>
+{% endblock script%}
