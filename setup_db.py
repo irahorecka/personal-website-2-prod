@@ -5,7 +5,7 @@ from irahorecka import create_app
 from scripts.db import setup
 from scripts.mail import write_email
 
-app = create_app()
+application = create_app()
 
 if __name__ == "__main__":
     # Validate environment variable keys
@@ -13,7 +13,7 @@ if __name__ == "__main__":
     for var in env_vars:
         os.environ[var]
     try:
-        setup(app)
+        setup(application)
     except Exception:
         write_email(
             "An exception occurred in 'setup_db.py'",

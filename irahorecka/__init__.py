@@ -11,22 +11,22 @@ from flask_sqlalchemy import SQLAlchemy
 
 from irahorecka.config import Config
 
+application = Flask(__name__)
 db = SQLAlchemy()
 
 
 def create_app(config_class=Config):
     """Creates Flask application instance."""
-    app = Flask(__name__)
-    app.config.from_object(Config)
-    CORS(app)
-    db.init_app(app)
+    application.config.from_object(Config)
+    CORS(application)
+    db.init_app(application)
 
     from irahorecka.main.routes import main
     from irahorecka.housing.routes import housing
     from irahorecka.errors.handlers import errors
 
-    app.register_blueprint(main)
-    app.register_blueprint(housing)
-    app.register_blueprint(errors)
+    application.register_blueprint(main)
+    application.register_blueprint(housing)
+    application.register_blueprint(errors)
 
-    return app
+    return application
