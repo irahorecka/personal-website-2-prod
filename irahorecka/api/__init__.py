@@ -25,4 +25,4 @@ AREA_KEY = {
     "santa cruz co": "scz",
     "city of san francisco": "sfc",
 }
-write_github_repos = partial(write_github_repos, os.environ.get("GITHUB_TOKEN"))
+write_github_repos = partial(write_github_repos, os.environ["GITHUB_TOKEN"])
