@@ -4,6 +4,10 @@ import ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 def write_email(sender_email, sender_pass, subject, body, code=""):
     """Main function to construct email sender, recipients, and content for
