@@ -19,3 +19,8 @@ def update_housing_score(app):
     with app.app_context():
         # Update Craigslist Housing table with post scores
         api.write_craigslist_housing_score(site="sfbay", areas=["eby", "nby", "sby", "sfc", "pen", "scz"])
+
+
+def rm_expired_housing(app):
+    with app.app_context():
+        api.rm_expired_craigslist_housing()

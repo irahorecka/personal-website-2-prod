@@ -45,8 +45,6 @@ def write_craigslist_housing(site, areas=("null",)):
         for post in craigslist_housing
     ]
     try:
-        # Drop current content in CraigslistHousing - posts expire, we want to reflect what is on Craigslist at real-time.
-        CraigslistHousing.query.delete()
         db.session.add_all(posts)
         db.session.commit()
     except exc.IntegrityError:
