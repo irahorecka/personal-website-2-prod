@@ -1,7 +1,0 @@
-# Copy text below to schedule scripts
-
-# For executing clean_craigslist_housing
-0 6-22/2 * * *
-
-# For executing rm_expired_craigslist_housing
-0 2 * * *
