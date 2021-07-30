@@ -22,11 +22,11 @@
     <link rel="apple-touch-icon" sizes="180×180" href="{{ url_for('static', filename='images/app-icons/180.png') }}">
     <link rel="icon" sizes="128×128" href="{{ url_for('static', filename='images/app-icons/128.png') }}">
     <script src="{{ url_for('static', filename="external/jquery-3.5.1.min.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/nav.js") }}"></script>
     {%- block js -%}
     {%- endblock js -%}
     <script defer src="{{ url_for('static', filename="external/iconify-1.0.7.min.js") }}"></script>
     <script defer src="{{ url_for('static', filename="external/headroom-0.9.4.min.js") }}"></script>
-    <script defer src="{{ url_for('static', filename="js/nav.min.js") }}"></script>
     <title>Ira Horecka | {{ content.title }}</title>
   </head>
   <body class="bg-white font-sans">
