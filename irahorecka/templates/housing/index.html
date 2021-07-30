@@ -65,6 +65,8 @@ document.body.addEventListener('htmx:afterSwap', function(evt) {
   }
 });
 $(document).ready(function() {
+  // Prepend blank '-' option in #area - allows site-wide search
+  $('#area').prepend('<option>-</option>');
   // Show load icon during ajax call.
   $("#query, #query-score").click(function(e) {
     e.preventDefault();
