@@ -15,6 +15,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   });
   headroom.init();
+  // adds header space right upon instantiation for clean non-jumpy load
+  $(".header-space").show();
   if(window.location.hash)
     headroom.unpin();
   $(header).addClass('headroom--transition');

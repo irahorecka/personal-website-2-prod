@@ -3,7 +3,6 @@
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    padding-top: 55px;
     overflow-anchor: none;
 }
 
@@ -30,6 +29,11 @@ a.github-link:hover {
     position: sticky;
     top: 0;
     z-index: 1
+}
+
+.header-space {
+    display: none;
+    padding-top: 55px
 }
 
 .border-1 {
