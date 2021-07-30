@@ -18,19 +18,17 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <label class="block">
         <span class="text-gray-700">Area</span>
-        <select name="area" id="area" hx-post="/housing/neighborhoods" hx-trigger="change, load" hx-target="#neighborhood" class="block w-full p-2 mt-1 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0">
-          <option>-</option>
-          <option>East Bay Area</option>
-          <option>North Bay / Marin</option>
-          <option>Peninsula</option>
-          <option>City of San Francisco</option>
-          <option>Santa Cruz Co</option>
-          <option>South Bay Area</option>
+        <select name="area" id="area" hx-post="/housing/neighborhoods" hx-trigger="change" hx-target="#neighborhood" class="block w-full p-2 mt-1 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0">
+        <option>{{ content.default.area }}</option>
+        {% for area in content.area %}
+          <option>{{ area }}</option>
+        {% endfor %}
         </select>
       </label>
       <label class="block">
       <span class="text-gray-700">Neighborhood</span>
       <select name="neighborhood" id="neighborhood" class="block w-full p-2 mt-1 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0">
+      <option>{{ content.default.neighborhood }}</option>
       {% include 'housing/neighborhoods.html' %}
       </select>
       </label>

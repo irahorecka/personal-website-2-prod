@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from irahorecka.api import AREA_KEY, NEIGHBORHOODS
+from irahorecka.api import AREA_KEYS, NEIGHBORHOODS
 
 DOCS_PATH = Path(__file__).absolute().parent.joinpath("docs.json")
 SCORE_COLORS = {
@@ -18,7 +18,7 @@ SCORE_COLORS = {
 def get_area_key(key):
     """Returns area key read from key provided by caller. Default to empty
     string if key not found."""
-    return AREA_KEY.get(key, "")
+    return AREA_KEYS.get(key, "")
 
 
 def get_neighborhoods(key):
