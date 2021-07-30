@@ -68,6 +68,17 @@ a.github-link:hover {
     filter: invert(71%) sepia(7%) saturate(126%) hue-rotate(60deg) brightness(85%) contrast(89%)
 }
 
+/* Resolves sticky mobile button */
+@media (hover: hover) and (pointer: fine) {
+    #query:hover {
+        background-color: #1D4ED8;
+    }
+
+    #query-score:hover {
+        background-color: #067857;
+    }
+}
+
 /* AJAX spinner */
 .lds-dual-ring {
     display: inline-block;

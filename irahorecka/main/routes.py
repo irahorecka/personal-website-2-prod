@@ -17,8 +17,8 @@ with open(Path(__file__).absolute().parent.parent.parent / "config.yaml", "r") a
     GITHUB_REPOS = yaml.safe_load(config)["github-repos"]
 
 
-@main.route("/")
 @main.route("/home")
+@main.route("/")
 def home():
     """Landing page of personal website."""
     content = {
