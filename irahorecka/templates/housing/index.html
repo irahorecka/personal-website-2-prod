@@ -18,7 +18,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <label class="block">
         <span class="text-gray-700">Area</span>
-        <select name="area" id="area" hx-post="/housing/neighborhoods" hx-trigger="change" hx-target="#neighborhood" class="block w-full p-2 mt-1 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0">
+        <select name="area" id="area" hx-post="/housing/neighborhoods" hx-trigger="load, change" hx-target="#neighborhood" class="block w-full p-2 mt-1 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0">
         <option>{{ content.default.area }}</option>
         {% for area in content.area %}
           <option>{{ area }}</option>
@@ -28,7 +28,6 @@
       <label class="block">
       <span class="text-gray-700">Neighborhood</span>
       <select name="neighborhood" id="neighborhood" class="block w-full p-2 mt-1 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0">
-      <option>{{ content.default.neighborhood }}</option>
       {% include 'housing/neighborhoods.html' %}
       </select>
       </label>
@@ -58,6 +57,12 @@
 <script type="text/javascript">
 var $loading = $('#loadingDiv').hide();
 $(document).ready(function() {
+  // Select neighborhood option at random upon page load
+  var select = document.getElementById('neighborhood');
+  var items = select.getElementsByTagName('option');
+  var index = Math.floor(Math.random() * items.length);
+  select.selectedIndex = index;
+  // Show load icon during ajax call
   $("#query, #query-score").click(function(e) {
     e.preventDefault();
     var data = $(this).serialize();
