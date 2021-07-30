@@ -1,16 +1,6 @@
 {% extends "layout.html" %}
 {% block js %}
 <script defer src="{{ url_for('static', filename="external/htmx-1.5.0.min.js") }}"></script>
-<script type="text/javascript">
-function randomNeighborhood(){
-  // Select neighborhood option at random upon page load
-  var select = document.getElementById('neighborhood');
-  var items = select.getElementsByTagName('option');
-  var index = Math.floor(Math.random() * items.length);
-  select.selectedIndex = index;
-  console.log('hi');
-}
-</script>
 {% endblock js %}
 {% block content %}
 <h1 class="font-extrabold tracking-tight text-gray-900 text-4xl mt-8 lg:mt-0 sm:text-5xl lg:text-6xl">Housing</h1>
@@ -66,8 +56,18 @@ function randomNeighborhood(){
 {% block script %}
 <script type="text/javascript">
 var $loading = $('#loadingDiv').hide();
+var firstSwap = true;
+document.body.addEventListener('htmx:afterSwap', function(evt) {
+    if (firstSwap === true) {
+      // Select neighborhood option at random upon page load
+      var select = document.getElementById('neighborhood');
+      var items = select.getElementsByTagName('option');
+      var index = Math.floor(Math.random() * items.length);
+      select.selectedIndex = index;
+      firstSwap = false;
+    }
+});
 $(document).ready(function() {
-  randomNeighborhood();
   // Show load icon during ajax call
   $("#query, #query-score").click(function(e) {
     e.preventDefault();
