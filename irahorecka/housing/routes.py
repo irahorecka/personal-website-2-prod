@@ -26,15 +26,10 @@ housing = Blueprint("housing", __name__)
 @housing.route("/housing")
 def home():
     """API page of personal website."""
-    # Set default area for every request received.
-    default_area = random.sample(AREAS, 1).pop()
     content = {
         "title": "Housing",
         "profile_img": "me_arrow.png",
         "area": AREAS,
-        "default": {
-            "area": default_area,
-        },
     }
     return render_template("housing/index.html", content=content)
 
