@@ -19,9 +19,9 @@
       <label class="block">
         <span class="text-gray-700">Area</span>
         <select name="area" id="area" hx-post="/housing/neighborhoods" hx-trigger="load, change" hx-target="#neighborhood" class="block w-full p-2 mt-1 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0">
-        {% for area in content.area %}
+        {% for area in content.area -%}
           <option>{{ area }}</option>
-        {% endfor %}
+        {% endfor -%}
         </select>
       </label>
       <label class="block">
@@ -55,16 +55,17 @@
 {% block script %}
 <script type="text/javascript">
 var $loading = $('#loadingDiv').hide();
-swapRandom('area');
+swapRandom('area', 'option');
+// Randomly sample neighborhood options only on load.
 var firstSwap = true;
 document.body.addEventListener('htmx:afterSwap', function(evt) {
   if (firstSwap === true) {
-    swapRandom('neighborhood');
+    swapRandom('neighborhood', 'option');
     firstSwap = false;
   }
 });
 $(document).ready(function() {
-  // Show load icon during ajax call
+  // Show load icon during ajax call.
   $("#query, #query-score").click(function(e) {
     e.preventDefault();
     var data = $(this).serialize();
@@ -78,10 +79,10 @@ $(document).ready(function() {
     };
   });
 });
-function swapRandom(id) {
-  // Get id from select and randomly choose option
-  var select = document.getElementById(id);
-  var items = select.getElementsByTagName('option');
+function swapRandom(parentID, childTag) {
+  // Get id of parent element and randomly sample its child tag.
+  var select = document.getElementById(parentID);
+  var items = select.getElementsByTagName(childTag);
   var index = Math.floor(Math.random() * items.length);
   select.selectedIndex = index;
 }
