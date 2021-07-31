@@ -5,10 +5,10 @@ Ira Horecka - July 2021
 
 #
 """
-import random
 from datetime import datetime
+from pathlib import Path
 
-from flask import jsonify, render_template, request, Blueprint
+from flask import abort, jsonify, render_template, request, Blueprint
 
 from irahorecka.api import read_craigslist_housing, AREAS
 from irahorecka.exceptions import InvalidUsage, ValidationError
@@ -16,11 +16,13 @@ from irahorecka.housing.utils import (
     get_area_key,
     get_neighborhoods,
     parse_req_form,
-    read_docs,
+    read_json,
     tidy_posts,
 )
 
 housing = Blueprint("housing", __name__)
+DOCS = read_json(Path(__file__).absolute().parent.joinpath("docs.json"))
+REGISTERED_APIS = read_json(Path(__file__).absolute().parent.joinpath("api.json"))
 
 
 @housing.route("/housing")
@@ -75,6 +77,9 @@ def query_score():
 @housing.route("/housing/<site>", subdomain="api")
 def api_site(site):
     """REST-like API for Craigslist housing - querying with Craigslist site."""
+    # If `site` endpoint is not registered, return 404 response.
+    if site not in REGISTERED_APIS:
+        abort(404)
     params = {**{"site": site}, **request.args.to_dict()}
     try:
         posts = list(read_craigslist_housing(params))
@@ -87,6 +92,9 @@ def api_site(site):
 def api_site_area(site, area):
     """REST-like API for Craigslist housing - querying with Craigslist site
     and area."""
+    # If `area` endpoint is not registered within its site, return 404 response.
+    if area not in REGISTERED_APIS.get(site, []):
+        abort(404)
     params = {**{"site": site, "area": area}, **request.args.to_dict()}
     try:
         posts = list(read_craigslist_housing(params))
@@ -101,7 +109,7 @@ def api_docs():
     content = {
         "title": "API Documentation: Housing",
         "profile_img": "me_arrow.png",
-        "docs": read_docs(),
+        "docs": DOCS,
     }
     return render_template("housing/docs.html", content=content)
 

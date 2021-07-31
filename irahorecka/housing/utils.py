@@ -1,9 +1,7 @@
 import json
-from pathlib import Path
 
 from irahorecka.api import AREA_KEYS, NEIGHBORHOODS
 
-DOCS_PATH = Path(__file__).absolute().parent.joinpath("docs.json")
 SCORE_COLORS = {
     "very-poor": "bg-red-400",
     "poor": "bg-red-300",
@@ -52,16 +50,16 @@ def parse_req_form(request_form):
     return params
 
 
-def read_docs():
-    """Returns `neighborhoods.json` as dictionary."""
-    with open(DOCS_PATH) as file:
-        docs = json.load(file)
-    return docs
-
-
 def tidy_posts(posts):
     """Tidies an iterable of posts provided by caller. Currently the only tidiness is
     adding score color key based on the provided score."""
     for post in posts:
         post["score_color"] = get_score_color(post["score"])
     return posts
+
+
+def read_json(path):
+    """Returns JSON file as dictionary."""
+    with open(path) as file:
+        content = json.load(file)
+    return content
