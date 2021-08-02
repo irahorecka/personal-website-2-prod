@@ -16,7 +16,7 @@ db = SQLAlchemy()
 
 def create_app(config_class=Config):
     """Creates Flask application instance."""
-    application.config.from_object(Config)
+    application.config.from_object(config_class)
     CORS(application)
     db.init_app(application)
 
