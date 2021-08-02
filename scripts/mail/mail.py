@@ -11,9 +11,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-def write_email(sender_email, sender_pass, subject, body, code=""):
-    """ENTRY POINT: Constructs email sender, recipients, and content for
-    new craigslist housing posts."""
+def write_email(sender_email, sender_pass, recipient_email, subject, body, code=""):
+    """ENTRY POINT: Constructs email sender, recipients, and content."""
     # Add new posts to Email object in text and markup format.
     content = f"""
         Message: {body}
@@ -28,7 +27,7 @@ def write_email(sender_email, sender_pass, subject, body, code=""):
     metadata = EmailMetadata()
     metadata.sender_email = sender_email
     metadata.sender_password = sender_pass
-    metadata.receiver_email = "ira.horecka@yahoo.com"
+    metadata.recipient_email = recipient_email
     metadata.subject = subject
     metadata.construct_MIME()
 
@@ -49,7 +48,7 @@ class EmailMetadata:
     def __init__(self):
         self.sender_email = ""
         self.sender_password = ""
-        self.receiver_email = ""
+        self.recipient_email = ""
         self.subject = ""
         self.message = ""
 
@@ -58,7 +57,7 @@ class EmailMetadata:
         self.message = MIMEMultipart("alternative")
         self.message["Subject"] = self.subject
         self.message["From"] = self.sender_email
-        self.message["To"] = ""
+        self.message["To"] = self.recipient_email
 
 
 class Email:
@@ -99,6 +98,4 @@ def send_email(metadata, text, html):
     ssl_context = ssl.create_default_context()
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ssl_context) as server:
         server.login(metadata.sender_email, metadata.sender_password)
-        # Single user email
-        message["To"] = metadata.receiver_email
-        server.sendmail(metadata.sender_email, metadata.receiver_email, message.as_string())
+        server.sendmail(metadata.sender_email, metadata.recipient_email, message.as_string())

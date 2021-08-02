@@ -22,14 +22,14 @@ if __name__ == "__main__":
         os.environ[var]
     try:
         setup(application)
+        # Success
+        write_email(
+            "Python script 'setup_app.py' completed successfully.",
+            "Python script 'setup_app.py' completed successfully. Please proceed with updating the database with CraigslistHousing and GitHub repo contents.",
+        )
     except Exception:
         write_email(
             "An exception occurred in 'setup_app.py'",
             "An exception occurred during database setup in 'setup_app.py'. Check error message below.",
             code=str(traceback.format_exc()),
         )
-    # Success
-    write_email(
-        "Python script 'setup_app.py' completed successfully.",
-        "Python script 'setup_app.py' completed successfully. Please proceed with updating the database with CraigslistHousing and GitHub repo contents.",
-    )
