@@ -68,7 +68,7 @@ View these common tips and tricks to make your setup experience a little less pa
         `sudo systemctl restart nginx`
 
 3. Permission denied (Error 13) for *.sock
-    - This is usually a permission error. Check this [Stack Overflow article](https://stackoverflow.com/questions/22071681/permission-denied-nginx-and-uwsgi-socket).
+    - This is usually a permission error. Check out this [Stack Overflow article](https://stackoverflow.com/questions/22071681/permission-denied-nginx-and-uwsgi-socket).
 
 4. Troubleshooting 500 Internal Server Error
     - Check out this [Digital Ocean discussion](https://www.digitalocean.com/community/questions/500-internal-server-error-in-my-site) to troubleshoot a 500 Internal Server Error.
