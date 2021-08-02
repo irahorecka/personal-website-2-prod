@@ -1,3 +1,9 @@
+"""
+/scripts/mail/__init__.py
+
+Concerns all things emails.
+"""
+
 import os
 from functools import partial
 

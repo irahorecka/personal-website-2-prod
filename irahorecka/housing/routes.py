@@ -1,10 +1,10 @@
 """
-/irahorecka/routes.py
-Ira Horecka - July 2021
-~~~~~~~~~~~~~~~~~~~~~~~
+/irahorecka/housing/routes.py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#
+Flask blueprint to handle routes for *.irahorecka.com/housing*.
 """
+
 from datetime import datetime
 from pathlib import Path
 
@@ -26,8 +26,8 @@ REGISTERED_APIS = read_json(Path(__file__).absolute().parent.joinpath("api.json"
 
 
 @housing.route("/housing")
-def home():
-    """API page of personal website."""
+def index():
+    """Landing page of irahorecka.com/housing."""
     content = {
         "title": "Housing",
         "profile_img": "me_arrow.png",
@@ -45,10 +45,10 @@ def neighborhoods():
     return render_template("housing/neighborhoods.html", neighborhoods=get_neighborhoods(area_key))
 
 
-@housing.route("/housing/query", methods=["POST"])
-def query():
-    """Handles rendering of template from HTMX call to /housing/query.
-    Sort returned content by newest posts."""
+@housing.route("/housing/query/new", methods=["POST"])
+def query_new():
+    """Handles rendering of template from HTMX call to /housing/query/new.
+    Returned content sorted by newest posts."""
     parsed_params = parse_req_form(request.form)
     # Fetch minified posts - don't need all that info.
     posts = list(read_craigslist_housing(parsed_params, minified=True))
@@ -60,10 +60,10 @@ def query():
     )
 
 
-@housing.route("/housing/query_score", methods=["POST"])
+@housing.route("/housing/query/score", methods=["POST"])
 def query_score():
-    """Handles rendering of template from HTMX call to /housing/query_score.
-    Sort returned content by score value."""
+    """Handles rendering of template from HTMX call to /housing/query/score.
+    Returned content sorted by score value."""
     parsed_params = parse_req_form(request.form)
     posts = list(read_craigslist_housing(parsed_params, minified=True))
     return render_template(
@@ -104,8 +104,8 @@ def api_site_area(site, area):
 
 
 @housing.route("/housing", subdomain="docs")
-def api_docs():
-    """Documentation page for personal website's API."""
+def docs():
+    """Documentation page for the housing API."""
     content = {
         "title": "API Documentation: Housing",
         "profile_img": "me_arrow.png",
@@ -116,7 +116,7 @@ def api_docs():
 
 @housing.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
-    """Handles invalid usage from REST-like api."""
+    """Handles invalid usage calls from REST-like API."""
     response = jsonify(error.to_dict())
     response.status_code = error.status_code
     return response

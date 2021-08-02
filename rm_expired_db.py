@@ -1,3 +1,10 @@
+"""
+/rm_expired_db.py
+~~~~~~~~~~~~~~~~~
+
+Script to remove expired posts from the Craigslist housing table in database.
+"""
+
 import traceback
 
 from irahorecka import create_app

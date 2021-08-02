@@ -1,3 +1,10 @@
+"""
+/update_db.py
+~~~~~~~~~~~~~
+
+Script to update Craigslist housing and GitHub repositories database.
+"""
+
 import traceback
 
 from irahorecka import create_app

@@ -1,4 +1,8 @@
 """
+/irahorecka/exceptions.py
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Module to store custom exceptions.
 """
 
 

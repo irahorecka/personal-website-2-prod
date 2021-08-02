@@ -1,11 +1,15 @@
 """
+/irahorecka/models.py
+~~~~~~~~~~~~~~~~~~~~~
+
+Module to store database models used in the Flask application.
 """
 
 from irahorecka import db
 
 
 class GitHubRepo(db.Model):
-    """Model from a GitHub repository."""
+    """Model for a GitHub repository."""
 
     __tablename__ = "githubrepo"
     id = db.Column(db.Integer, primary_key=True)
@@ -26,7 +30,7 @@ class GitHubRepo(db.Model):
 
 
 class RepoLanguage(db.Model):
-    """Model from a GitHub repository's language(s)."""
+    """Model for a GitHub repository's language(s)."""
 
     __tablename__ = "repolanguage"
     id = db.Column(db.Integer, primary_key=True)
@@ -39,7 +43,7 @@ class RepoLanguage(db.Model):
 
 
 class CraigslistHousing(db.Model):
-    """Model from Craigslist Housing post attributes."""
+    """Model for Craigslist housing post attributes."""
 
     __tablename__ = "craigslisthousing"
     # `id` is the Craigslist's post ID

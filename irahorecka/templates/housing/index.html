@@ -7,7 +7,7 @@
 <p class="mt-6 text-xl leading-8 text-gray-500">
   There’s plenty of housing offered on Craigslist, but the browsing experience is no fun. Try this tool to find great housing deals for your next move.
   This is also available for developers, check out the
-  <a href="{{ url_for('housing.api_docs') }}" class="text-blue-700 hover:underline">API docs</a>.
+  <a href="{{ url_for('housing.docs') }}" class="text-blue-700 hover:underline">API docs</a>.
 </p>
 <p class="mt-6 text-xl leading-8 text-gray-500">
   The current scope is in the SF Bay Area.
@@ -41,8 +41,8 @@
         </div>
       </label>
       <div class="flex flex-row space-x-2">
-        <input type="submit" id="query" value="Search" hx-post="/housing/query" hx-trigger="click" hx-target="#table" class="w-8/12 bg-blue-500 focus:outline-none text-white font-bold py-2 px-4 rounded-full"></input>
-        <input type="submit" id="query-score" value="Score" hx-post="/housing/query_score" hx-trigger="click" hx-target="#table" class="w-4/12 bg-green-500 focus:outline-none text-white font-bold py-2 px-4 rounded-full"></input>
+        <input type="submit" id="query-new" value="Search" hx-post="/housing/query/new" hx-trigger="click" hx-target="#table" class="w-8/12 bg-blue-500 focus:outline-none text-white font-bold py-2 px-4 rounded-full"></input>
+        <input type="submit" id="query-score" value="Score" hx-post="/housing/query/score" hx-trigger="click" hx-target="#table" class="w-4/12 bg-green-500 focus:outline-none text-white font-bold py-2 px-4 rounded-full"></input>
       </div>
       <div id="loadingDiv" class="lds-dual-ring"></div>
     </div>
@@ -70,7 +70,7 @@ $(document).ready(function() {
   // Prepend blank '-' option in #area - allows site-wide search
   $('#area').prepend('<option>-</option>');
   // Show load icon during ajax call.
-  $("#query, #query-score").click(function(e) {
+  $("#query-new, #query-score").click(function(e) {
     e.preventDefault();
     var data = $(this).serialize();
     var url = $(this).attr('hx-post');

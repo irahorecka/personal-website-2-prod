@@ -1,3 +1,10 @@
+"""
+/setup_db.py
+~~~~~~~~~~~~
+
+Script to check for correctly configured environment variables and set up database.
+"""
+
 import os
 import traceback
 

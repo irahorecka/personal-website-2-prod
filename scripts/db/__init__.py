@@ -1,3 +1,9 @@
+"""
+/scripts/db/__init__.py
+
+Concerns all things database write and update.
+"""
+
 from functools import partial
 
 from irahorecka import create_app

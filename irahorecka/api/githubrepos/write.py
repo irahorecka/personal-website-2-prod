@@ -1,4 +1,8 @@
 """
+/irahorecka/api/githubrepos/write.py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Module to write and update GitHub repositories database table.
 """
 
 import concurrent.futures
@@ -30,7 +34,8 @@ LANGUAGE_COLOR = {
 
 
 def write_github_repos(github_token):
-    """Write `GITHUB_TOKEN` user's GitHub repos to database."""
+    """ENTRY POINT: Writes user's GitHub repos to database. The user is determined via GitHub's access
+    token `github_token`."""
     # Fetch repos first to allow fastest write to db.
     repos = fetch_repos(github_token)
     # Drop content in tables - don't bother updating as hard reset for a small
@@ -54,14 +59,14 @@ def write_github_repos(github_token):
         )
         db.session.add(repo_entry)
         for lang in repo["languages"]:
-            # Back-reference programming language used in a repo to `repo_entry`
+            # Back-reference programming language used in a repo to `repo_entry`.
             lang_session = RepoLanguage(name=lang["name"], color=lang["color"], repo=repo_entry)
             db.session.add(lang_session)
     db.session.commit()
 
 
 def fetch_repos(access_token):
-    """Entry point function to fetch GitHub user's repos (via access token)."""
+    """Fetches GitHub user's repos."""
     user = Github(access_token).get_user()
     # Attempt to query pycraigslist instances even if there's a connection error.
     repos = user.get_repos()
@@ -70,17 +75,10 @@ def fetch_repos(access_token):
             return [repo for repo in map_threads(build_repo_dict, repos) if repo is not None]
         except ConnectionError:
             if i == 3:
-                # Raise error if error cannot be resolved in 3 attempts
+                # Raise error if error cannot be resolved in 3 attempts.
                 raise ConnectionError from ConnectionError
-            # Wait a minute before reattempting query
+            # Wait a minute before reattempting query.
             time.sleep(60)
-
-
-def map_threads(func, _iterable):
-    """Map function with iterable object in using thread pools."""
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        result = executor.map(func, _iterable)
-    return result
 
 
 def build_repo_dict(repo):
@@ -103,7 +101,7 @@ def build_repo_dict(repo):
 
 
 def validate_gh_method(method, *args, **kwargs):
-    """Wrapper that will return an empty string if PyGithub method
+    """Wrapper that returns an empty string if PyGithub method
     raises an exception."""
     try:
         return method(*args, **kwargs)
@@ -115,3 +113,10 @@ def get_languages(repo):
     """Returns language color as seen on GitHub."""
     languages = repo.get_languages()
     return [{"name": lang, "color": LANGUAGE_COLOR.get(lang.lower(), "#ffffff")} for lang in languages]
+
+
+def map_threads(func, _iterable):
+    """Maps function with iterable object in using thread pools."""
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        result = executor.map(func, _iterable)
+    return result

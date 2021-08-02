@@ -1,7 +1,6 @@
 """
 /run.py
-Ira Horecka - July 2021
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~
 
 Starts a Flask web application instance.
 """

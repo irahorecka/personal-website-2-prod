@@ -1,10 +1,9 @@
 """
-/enrichment/__init__.py
-Ira Horecka - June 2021
-~~~~~~~~~~~~~~~~~~~~~~~
+/irahorecka/__init__.py
 
-#
+Concerns all things irahorecka.com.
 """
+
 from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy

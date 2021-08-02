@@ -1,3 +1,10 @@
+"""
+/irahorecka/housing/utils.py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Utility module to support /irahorecka/housing/routes.py.
+"""
+
 import json
 
 from irahorecka.api import AREA_KEYS, NEIGHBORHOODS

@@ -1,10 +1,10 @@
 """
-/irahorecka/routes.py
-Ira Horecka - July 2021
-~~~~~~~~~~~~~~~~~~~~~~~
+/irahorecka/main/routes.py
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#
+Flask blueprint to handle routes for irahorecka.com*.
 """
+
 from pathlib import Path
 
 import yaml
@@ -17,9 +17,8 @@ with open(Path(__file__).absolute().parent.parent.parent / "config.yaml", "r") a
     GITHUB_REPOS = yaml.safe_load(config)["github-repos"]
 
 
-@main.route("/home")
 @main.route("/")
-def home():
+def index():
     """Landing page of personal website."""
     content = {
         "title": "Home",

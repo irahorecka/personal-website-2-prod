@@ -1,5 +1,10 @@
 """
+/irahorecka/api/__init__.py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Concerns all things API (read, write, update).
 """
+
 import os
 from functools import partial
 
@@ -16,7 +21,7 @@ from irahorecka.api.githubrepos.write import write_github_repos
 load_dotenv()
 
 NEIGHBORHOODS = read_neighborhoods()
-# Sourced from python-craigslist-meta
+# Sourced from python-craigslist-meta.
 AREAS = [
     "East Bay Area",
     "North Bay / Marin",
@@ -25,7 +30,7 @@ AREAS = [
     "Santa Cruz Co",
     "South Bay Area",
 ]
-# Set to lower casing for case-agnostic lookups
+# Set to lower casing for case-agnostic lookups.
 AREA_KEYS = {
     "east bay area": "eby",
     "north bay / marin": "nby",

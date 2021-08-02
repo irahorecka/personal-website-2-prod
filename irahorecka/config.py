@@ -1,5 +1,9 @@
 """
+/irahorecka/config.py
+
+Module to store Flask configurations for production.
 """
+
 import os
 
 from dotenv import load_dotenv

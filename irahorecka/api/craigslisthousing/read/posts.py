@@ -1,4 +1,8 @@
 """
+/irahorecka/api/craigslisthousing/read/posts.py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Module to handle the validation and delivery of Craigslist posts from a query.
 """
 
 from datetime import datetime
@@ -10,8 +14,7 @@ from irahorecka.models import CraigslistHousing
 
 
 def read_craigslist_housing(request_args, minified=False):
-    """Reads and returns SF Bay Area Craigslist Housing posts as a list of dictionaries
-    up to the provided limit."""
+    """ENTRY POINT: Reads query and yields Craigslist housing posts as dictionaries from database."""
     v_status, v_args = validate_request_args(request_args)
     # Raise ValidationError to caller if parsing of request args failed
     if not v_status:
@@ -26,11 +29,10 @@ def read_craigslist_housing(request_args, minified=False):
 
 
 def validate_request_args(request_args):
-    """Validate request args for proper data types. Coerce into datatype if initial
-    validation passes, other wise send error code and failure message to be displayed
-    to client."""
-    # Declare schema within function - usually single query, single validation
-    # Avoid worrying about performance impact from declaration
+    """Validates request args for proper data types. Coerce into desired datatype if initial
+    validation passes, otherwise send error code and failure message to be returned to caller."""
+    # Declare schema within function - usually single query, single validation.
+    # Avoid worrying about performance impact from declaration.
     schema = {
         "id": {"type": "integer", "coerce": int, "default": 0},
         # Cast to float then try to validate as integer. Set default limit to 50 posts per query.
@@ -55,9 +57,8 @@ def validate_request_args(request_args):
 
 
 def filter_query(model, validated_args):
-    """Returns filtered db.Model.query object to caller, filtered by arguments
-    in `validated_args`."""
-    # If an ID was provided in the query, return post with ID immediately
+    """Returns filtered db.Model.query object to caller, filtered by arguments in `validated_args`."""
+    # If an ID was provided in the query, return post with ID immediately.
     if validated_args.get("id"):
         return tuple(model.query.get(validated_args["id"]))
     query = filter_categorical(model, model.query, validated_args)
@@ -81,8 +82,7 @@ def filter_categorical(model, query, validated_args):
 
 
 def filter_scalar(model, query, validated_args):
-    """Filters scalar attributes of the requests query.
-    E.g. `min_price=1000`."""
+    """Filters scalar attributes of the requests query. E.g. `min_price=1000`."""
     return (
         query.filter(model.bedrooms >= validated_args["min_bedrooms"])
         .filter(model.bedrooms <= validated_args["max_bedrooms"])

@@ -1,3 +1,10 @@
+"""
+/irahorecka/errors/handlers.py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Flask blueprint to handle errors.
+"""
+
 from flask import request, render_template, Blueprint
 
 from irahorecka.exceptions import InvalidUsage

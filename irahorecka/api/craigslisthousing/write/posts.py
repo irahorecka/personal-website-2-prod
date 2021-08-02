@@ -1,4 +1,8 @@
 """
+/irahorecka/api/craigslisthousing/write/posts.py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Module to write and update Craigslist housing database table.
 """
 
 import time
@@ -12,7 +16,7 @@ from irahorecka.models import db, CraigslistHousing
 
 
 def write_craigslist_housing(site, areas=("null",)):
-    """Writes unique SF Bay Area Craigslist Housing posts (`apa`) to database."""
+    """ENTRY POINT: Writes Craigslist housing posts (category `apa`) to database."""
     craigslist_housing = fetch_craigslist_apa(site, areas)
     posts = [
         CraigslistHousing(
@@ -58,7 +62,7 @@ def fetch_craigslist_apa(*args, **kwargs):
     for apa in yield_apa(*args, **kwargs):
         for post in apa.search_detail():
             post_id = int(post["id"])
-            # Performs checks to ensure no duplication of post id in current search and CraigslistHousing table.
+            # Performs checks to ensure no duplication of ID in current search and CraigslistHousing table.
             if post_id in post_id_ref or CraigslistHousing.query.get(post_id):
                 continue
             post_id_ref.add(post_id)
@@ -69,7 +73,7 @@ def fetch_craigslist_apa(*args, **kwargs):
 
 
 def yield_apa(site, areas):
-    """Yields detailed posts from pycraigslist.housing.apa instances."""
+    """Yields detailed posts from `pycraigslist.housing.apa` instances."""
     # Attempt to query pycraigslist instances even if there's a connection error.
     for i in range(4):
         try:
@@ -78,17 +82,18 @@ def yield_apa(site, areas):
                 for area in areas
                 for query_filter in yield_apa_filters()
             ]
+            # Break out if successfully executed.
             return
         except MaximumRequestsError:
             if i == 3:
-                # Raise error if error cannot be resolved in 3 attempts
+                # Raise error if error cannot be resolved in 3 attempts.
                 raise MaximumRequestsError from MaximumRequestsError
-            # Wait a minute before reattempting query
+            # Wait a minute before reattempting query.
             time.sleep(60)
 
 
 def yield_apa_filters():
-    """Yields apa filters for caller queries."""
+    """Yields `pycraigslist.housing.apa` filters for subsequent queries."""
     # Only filter for prices, ranging from $0 - $8000 in $500 increments to gain more listing coverage.
     # Craigslist limits number of posts to 3000 for any given query.
     yield from [
