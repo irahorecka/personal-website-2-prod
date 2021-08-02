@@ -70,7 +70,7 @@ a.github-link:hover {
 
 /* Resolves sticky mobile button */
 @media (hover: hover) and (pointer: fine) {
-    #query:hover {
+    #query-new:hover {
         background-color: #1D4ED8;
     }
 
