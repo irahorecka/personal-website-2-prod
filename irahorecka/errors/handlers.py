@@ -16,7 +16,7 @@ errors = Blueprint("errors", __name__)
 def error_404(error):
     """Error: Page not found"""
     # Return jsonified error response if request was made via domain pattern api.irahorecka.com/*
-    if request.headers["Host"].startswith("api"):
+    if request.headers["Host"].startswith("api."):
         return InvalidUsage(str(error), status_code=404).to_dict(), 404
     content = {
         "title": "Error 404",

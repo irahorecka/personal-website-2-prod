@@ -24,7 +24,7 @@ def index():
         "title": "Home",
         "profile_img": "profile.png",
     }
-    return render_template("index.html", content=content)
+    return render_template("main/index.html", content=content)
 
 
 @main.route("/projects")
@@ -35,4 +35,4 @@ def projects():
         "profile_img": "me_computing.png",
         "repos": read_github_repos(GITHUB_REPOS),
     }
-    return render_template("projects.html", content=content)
+    return render_template("main/projects.html", content=content)
