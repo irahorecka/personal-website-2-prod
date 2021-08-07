@@ -10,9 +10,9 @@ from pathlib import Path
 
 from flask import abort, jsonify, render_template, request, Blueprint
 
+from irahorecka import limiter
 from irahorecka.api import read_craigslist_housing, AREAS
-from irahorecka.core import limiter
-from irahorecka.exceptions import InvalidUsage, ValidationError
+from irahorecka.exceptions import ValidationError
 from irahorecka.housing.utils import (
     get_area_key,
     get_neighborhoods,
@@ -87,7 +87,7 @@ def api_site(site):
         posts = list(read_craigslist_housing(params))
         return jsonify(posts)
     except ValidationError as e:
-        raise InvalidUsage(str(e).capitalize(), status_code=400) from e
+        abort(400, str(e))
 
 
 @housing.route("/housing/<site>/<area>", subdomain="api")
@@ -103,7 +103,7 @@ def api_site_area(site, area):
         posts = list(read_craigslist_housing(params))
         return jsonify(posts)
     except ValidationError as e:
-        raise InvalidUsage(str(e).capitalize(), status_code=400) from e
+        abort(400, str(e))
 
 
 @housing.route("/housing", subdomain="docs")
@@ -115,11 +115,3 @@ def docs():
         "docs": DOCS,
     }
     return render_template("housing/docs.html", content=content)
-
-
-@housing.errorhandler(InvalidUsage)
-def handle_invalid_usage(error):
-    """Handles invalid usage calls from REST-like API."""
-    response = jsonify(error.to_dict())
-    response.status_code = error.status_code
-    return response

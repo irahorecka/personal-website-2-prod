@@ -19,8 +19,8 @@ def read_craigslist_housing(request_args, minified=False):
     # Raise ValidationError to caller if parsing of request args failed
     if not v_status:
         raise ValidationError(v_args)
-    # Set maximum limit to 3000 per call
-    limit = min(v_args["limit"], 3_000)
+    # Set maximum limit to 3000 per call. Ensure limit is a positive value else limit is 0.
+    limit = min(max(v_args["limit"], 0), 3_000)
     filtered_query = filter_query(CraigslistHousing, v_args)
     if not minified:
         yield from fetch_content(CraigslistHousing, filtered_query, limit)

@@ -12,7 +12,7 @@ from irahorecka.exceptions import InvalidUsage
 errors = Blueprint("errors", __name__)
 
 
-def api_reroute(route):
+def api_error_reroute(route):
     """Reroutes calls to the api subdomain to return JSONified response.
     I.e. if a call was made to api.irahorecka.com/*"""
 
@@ -24,8 +24,14 @@ def api_reroute(route):
     return wrapper
 
 
+@errors.app_errorhandler(400)
+@api_error_reroute
+def error_400(error):
+    """Error: Bad Request"""
+
+
 @errors.app_errorhandler(403)
-@api_reroute
+@api_error_reroute
 def error_403(error):
     """Error: Forbidden"""
     content = {
@@ -36,9 +42,9 @@ def error_403(error):
 
 
 @errors.app_errorhandler(404)
-@api_reroute
+@api_error_reroute
 def error_404(error):
-    """Error: Page not found"""
+    """Error: Page Not Found"""
     content = {
         "title": "Error 404",
         "profile_img": "feynman.jpeg",
@@ -47,7 +53,7 @@ def error_404(error):
 
 
 @errors.app_errorhandler(429)
-@api_reroute
+@api_error_reroute
 def error_429(error):
     """Error: Too Many Requests"""
     content = {
@@ -58,7 +64,7 @@ def error_429(error):
 
 
 @errors.app_errorhandler(500)
-@api_reroute
+@api_error_reroute
 def error_500(error):
     """Error: Internal Server Error"""
     content = {

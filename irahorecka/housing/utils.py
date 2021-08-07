@@ -33,20 +33,19 @@ def get_neighborhoods(key):
 
 def get_score_color(score):
     """Gets score color from score provided by caller."""
-    if score == 0.0:
-        return SCORE_COLORS["neutral"]
     if score >= 80:
         return SCORE_COLORS["very-good"]
     if score >= 40:
         return SCORE_COLORS["good"]
-    if score >= 0.0:
+    if score > 0:
         return SCORE_COLORS["mild-good"]
     if score <= -80:
         return SCORE_COLORS["very-poor"]
     if score <= -40:
         return SCORE_COLORS["poor"]
-    if score <= 0.0:
+    if score < 0:
         return SCORE_COLORS["mild-poor"]
+    return SCORE_COLORS["neutral"]
 
 
 def parse_req_form(request_form):

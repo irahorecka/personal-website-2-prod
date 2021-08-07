@@ -91,8 +91,7 @@ def get_cl_strainer():
 
     def target_elem_attrs(elem, attrs):
         """Gets desired element and attributes."""
-        if elem == "h2":
-            return True
+        return elem == "h2"
 
     return SoupStrainer(target_elem_attrs)
 

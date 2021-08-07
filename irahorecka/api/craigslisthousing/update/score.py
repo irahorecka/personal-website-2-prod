@@ -142,10 +142,6 @@ class Ft2(Score):
             self._postvalue_fn, np.log, np.sqrt, price, ft2, bedrooms, perc_min=5, perc_max=95
         )
 
-    def _postvalue_fn(self, log_fn, sqrt_fn, price, ft2, bedrooms):
-        """An algorithm to evaluate housing value from price, ft2, and number of bedrooms."""
-        return log_fn(log_fn(price) / sqrt_fn(bedrooms)) * price / sqrt_fn(ft2)
-
     def _filter_query_for_log_calc(self, query):
         """Updates query to select for self.model.price / self.model.ft2 > 0 and self.model.price /
         sqrt(self.model.ft2) > 0 to allow for logarithmic calculations."""
@@ -155,6 +151,11 @@ class Ft2(Score):
                 func.log(self.model.price) / func.sqrt(self.model.ft2) > 0,
             )
         )
+
+    @staticmethod
+    def _postvalue_fn(log_fn, sqrt_fn, price, ft2, bedrooms):
+        """An algorithm to evaluate housing value from price, ft2, and number of bedrooms."""
+        return log_fn(log_fn(price) / sqrt_fn(bedrooms)) * price / sqrt_fn(ft2)
 
 
 class Bedrooms(Score):

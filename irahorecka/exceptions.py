@@ -28,5 +28,3 @@ class InvalidUsage(Exception):
 
 class ValidationError(Exception):
     """Validation of request args failed."""
-
-    pass
