@@ -115,3 +115,11 @@ def docs():
         "docs": DOCS,
     }
     return render_template("housing/docs.html", content=content)
+
+
+@housing.errorhandler(InvalidUsage)
+def handle_invalid_usage(error):
+    """Handles invalid usage calls from REST-like API."""
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
