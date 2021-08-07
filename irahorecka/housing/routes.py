@@ -11,6 +11,7 @@ from pathlib import Path
 from flask import abort, jsonify, render_template, request, Blueprint
 
 from irahorecka.api import read_craigslist_housing, AREAS
+from irahorecka.core import limiter
 from irahorecka.exceptions import InvalidUsage, ValidationError
 from irahorecka.housing.utils import (
     get_area_key,
@@ -30,7 +31,7 @@ def index():
     """Landing page of irahorecka.com/housing."""
     content = {
         "title": "Housing",
-        "profile_img": "me_arrow.png",
+        "profile_img": "me-arrow.png",
         "area": AREAS,
     }
     return render_template("housing/index.html", content=content)
@@ -71,10 +72,11 @@ def query_score():
     )
 
 
-#  ~~~~~~~~~~ BEGIN RESTFUL API ~~~~~~~~~~
+#  ~~~~~~~~~~ BEGIN RESTFUL API AND API DOCS ~~~~~~~~~~
 
 
 @housing.route("/housing/<site>", subdomain="api")
+@limiter.limit("10/second")
 def api_site(site):
     """REST-like API for Craigslist housing - querying with Craigslist site."""
     # If `site` endpoint is not registered, return 404 response.
@@ -89,6 +91,7 @@ def api_site(site):
 
 
 @housing.route("/housing/<site>/<area>", subdomain="api")
+@limiter.limit("10/second")
 def api_site_area(site, area):
     """REST-like API for Craigslist housing - querying with Craigslist site
     and area."""
@@ -108,15 +111,7 @@ def docs():
     """Documentation page for the housing API."""
     content = {
         "title": "API Documentation: Housing",
-        "profile_img": "me_arrow.png",
+        "profile_img": "me-arrow.png",
         "docs": DOCS,
     }
     return render_template("housing/docs.html", content=content)
-
-
-@housing.errorhandler(InvalidUsage)
-def handle_invalid_usage(error):
-    """Handles invalid usage calls from REST-like API."""
-    response = jsonify(error.to_dict())
-    response.status_code = error.status_code
-    return response

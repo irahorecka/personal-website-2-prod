@@ -3,6 +3,7 @@ PyGithub
 flask
 flask_assets
 flask_cors
+flask_limiter
 flask_sqlalchemy
 cerberus
 pycraigslist
