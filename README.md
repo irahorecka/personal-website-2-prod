@@ -61,11 +61,13 @@ View these common tips and tricks to make your setup experience a little less pa
 
         then 
 
-        `$ sudo chown -R user:user /var/lib/nginx/` (where `user` is your CentOS username)
+        `$ sudo chown -R user:user /var/lib/nginx/` (where `user` is your CentOS username) [[ref](https://stackoverflow.com/questions/29872174/wsgi-nginx-error-permission-denied-while-connecting-to-upstream)].
+
+        `$ sudo chgrp user ~/app` (where `user` is your CentOS username and `app` is your project directory's name) [[ref](https://stackoverflow.com/questions/62225597/nginx-gunicorn-flask-502-bad-gateway-permission-denied-on-socket-file/67625668#67625668)].
 
         and finally
 
-        `sudo systemctl restart nginx`
+        `$ sudo systemctl restart nginx`
 
 3. Permission denied (Error 13) for *.sock
     - This is usually a permission error. Check out this [Stack Overflow article](https://stackoverflow.com/questions/22071681/permission-denied-nginx-and-uwsgi-socket).
@@ -117,6 +119,6 @@ View these common tips and tricks to make your setup experience a little less pa
 3. [Gmail SMTPAuthError when using `smtp.gmail.com` via Python](https://stackoverflow.com/questions/26852128/smtpauthenticationerror-when-sending-mail-using-gmail-and-python)
 
 4. Viewing spool file (i.e. 'You have mail')
-    - `$ cat /var/spool/mail/user` (where `user` is your CentOS username)
+    - `$ cat /var/spool/mail/user` (where `user` is your CentOS username).
 
 </details>
