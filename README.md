@@ -141,10 +141,12 @@ View these common tips and tricks to make your setup experience a little less pa
 
 1. Clone this repository. Create a virtual environment named `webenv` in the project root. Install project requirements via `pip` in the virtual environment.
 
-2. Download and setup PostgreSQL and create a database named `irahorecka`. Ensure all of your environment variables are set up in a file named `.env` stored in the project root. Afterwards, run `setup_db.py` to ensure correct database and environment variable configurations.
+2. Download and setup PostgreSQL and create a database named `irahorecka`. Ensure all of your environment variables are declared in a file named `.env` stored in the project root. Afterwards, run `setup_db.py` to ensure correct database and environment variable configurations.
 
-3. Setup your cron tasks. Open the crontab tasklist and delete undesired cron tasks via `$ crontab -e`. To delete EVERYTHING, you can execute  `$ crontab -r` (NOTE: make sure you are OK with deleting every cron task). Once satisfied, execute `$ sudo bash cron.sh` to concatenate timed executions of `update_db.py` and `rm_expired_db.py`.
+3. This web app relies on timed updates and cleaning of the `irahorecka` database. These are done with `update_db.py` and `rm_expired_db.py`. Execute `update_db.py` to populate the `irahorecka` database. Ensure no runtime exceptions are thrown. Afterwards, run `rm_expired_db.py`. Troubleshoot as necessary (commonly due to configuration issues). Proceed to the next step when both scripts execute without error.
 
-4. Though missing in this repository, it is helpful to create a bash script to restart your web app and the NGINX server using `sudo systemctl restart *`. This way, you can simply run `$ sudo bash restart.sh` anytime you make or pull changes.
+4. Setup your cron tasks. Open the crontab tasklist and delete undesired cron tasks via `$ crontab -e`. To delete EVERYTHING, you can execute  `$ crontab -r` (NOTE: make sure you are OK with deleting every cron task). Once satisfied, execute `$ sudo bash cron.sh` to concatenate timed executions of `update_db.py` and `rm_expired_db.py`.
+
+5. Though missing in this repository, it is helpful to create a bash script to restart your web app and the NGINX server using `sudo systemctl restart *`. This way, you can simply run `$ sudo bash restart.sh` anytime you make or pull changes.
 
 </details>
