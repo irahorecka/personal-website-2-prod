@@ -9,16 +9,6 @@ import json
 
 from irahorecka.api import AREA_KEYS, NEIGHBORHOODS
 
-SCORE_COLORS = {
-    "very-poor": "bg-red-400",
-    "poor": "bg-red-300",
-    "mild-poor": "bg-red-200",
-    "neutral": "bg-white",
-    "mild-good": "bg-green-200",
-    "good": "bg-green-300",
-    "very-good": "bg-green-400",
-}
-
 
 def get_area_key(key):
     """Returns area key read from key provided by caller. Default to empty
@@ -31,21 +21,35 @@ def get_neighborhoods(key):
     return NEIGHBORHOODS.get(key, tuple())
 
 
-def get_score_color(score):
-    """Gets score color from score provided by caller."""
-    if score >= 80:
-        return SCORE_COLORS["very-good"]
-    if score >= 40:
-        return SCORE_COLORS["good"]
-    if score > 0:
-        return SCORE_COLORS["mild-good"]
-    if score <= -80:
-        return SCORE_COLORS["very-poor"]
-    if score <= -40:
-        return SCORE_COLORS["poor"]
-    if score < 0:
-        return SCORE_COLORS["mild-poor"]
-    return SCORE_COLORS["neutral"]
+def get_score_attr(score):
+    """Gets score class (CSS) and score letter from score provided by caller. Take a look at
+    irahorecka/static/css/dist/style.css to view these classes. This function assumes
+    a score will range from -100 to 100."""
+    if score >= 60:
+        if score > 86.6:
+            return "score-grade-A", "A+"
+        if score > 73.3:
+            return "score-grade-A", "A"
+        return "score-grade-A", "A-"
+    if score >= 20:
+        if score > 46.6:
+            return "score-grade-B", "B+"
+        if score > 33.3:
+            return "score-grade-B", "B"
+        return "score-grade-B", "B-"
+    if score >= -20:
+        if score > 6.6:
+            return "score-grade-C", "C+"
+        if score > -6.6:
+            return "score-grade-C", "C"
+        return "score-grade-C", "C-"
+    if score >= -60:
+        if score > -33.3:
+            return "score-grade-D", "D+"
+        if score > -46.6:
+            return "score-grade-D", "D"
+        return "score-grade-D", "D-"
+    return "score-grade-F", "F"
 
 
 def parse_req_form(request_form):
@@ -58,9 +62,9 @@ def parse_req_form(request_form):
 
 def tidy_posts(posts):
     """Tidies an iterable of posts provided by caller. Currently the only tidiness is
-    adding score color key based on the provided score."""
+    adding score color and letter based on the provided score."""
     for post in posts:
-        post["score_color"] = get_score_color(post["score"])
+        post["score_class"], post["score_letter"] = get_score_attr(post["score"])
     return posts
 
 

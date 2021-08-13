@@ -6,6 +6,7 @@
     <meta name="description" content="Ira Horecka's website">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'>
     <link rel="icon" href="{{ url_for('static', filename="images/hand-lizard-o.png") }}" title="GitHub">
+    <link rel="preload" as="image" href="{{ url_for('static', filename=['images/{}'.format(content.profile_img)]) }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dist/cards.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dist/main.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dist/nav.min.css') }}">

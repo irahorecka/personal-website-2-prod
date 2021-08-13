@@ -50,7 +50,8 @@ a.github-link:hover {
 
 .github-icon {
     vertical-align: -0.125em;
-    margin-top: 5.6px;
+    margin-top: auto;
+    margin-bottom: auto;
     margin-left: -1px;
     margin-right: 4px;
 }
@@ -68,7 +69,24 @@ a.github-link:hover {
     filter: invert(71%) sepia(7%) saturate(126%) hue-rotate(60deg) brightness(85%) contrast(89%)
 }
 
-/* Resolves sticky mobile button */
+/* Housing score colors */
+.score-grade-A {
+    background-color: #2ce474;
+}
+.score-grade-B {
+    background-color: #ccf039;
+}
+.score-grade-C {
+    background-color: #ffe600;
+}
+.score-grade-D {
+    background-color: #ff9600;
+}
+.score-grade-F {
+    background-color: #ff3a24;
+}
+
+/* Resolves sticky mobile button in /housing */
 @media (hover: hover) and (pointer: fine) {
     #query-new:hover {
         background-color: #1D4ED8;

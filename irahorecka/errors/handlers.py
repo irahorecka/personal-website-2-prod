@@ -18,6 +18,7 @@ def api_error_reroute(route):
 
     def wrapper(error):
         if request.headers["Host"].startswith("api."):
+            # Return JSONified error if a request is made to the REST API.
             return InvalidUsage(str(error), status_code=error.code).to_dict(), error.code
         return route(error)
 
