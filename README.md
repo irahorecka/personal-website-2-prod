@@ -134,3 +134,17 @@ View these common tips and tricks to make your setup experience a little less pa
     - `$ cat /var/spool/mail/user` (where `user` is your CentOS username).
 
 </details>
+
+<details>
+<summary>For Ira: Setting up the web app properly.</summary>
+<br>
+
+1. Clone this repository. Create a virtual environment named `webenv` in the project root. Install project requirements via `pip` in the virtual environment.
+
+2. Download and setup PostgreSQL and create a database named `irahorecka`. Ensure all of your environment variables are set up in a file named `.env` stored in the project root. Afterwards, run `setup_db.py` to ensure correct database and environment variable configurations.
+
+3. Setup your cron tasks. Open the crontab tasklist and delete undesired cron tasks via `$ crontab -e`. To delete EVERYTHING, you can execute  `$ crontab -r` (NOTE: make sure you are OK with deleting every cron task). Once satisfied, execute `$ sudo bash cron.sh` to concatenate timed executions of `update_db.py` and `rm_expired_db.py`.
+
+4. Though missing in this repository, it is helpful to create a bash script to restart your web app and the NGINX server using `sudo systemctl restart *`. This way, you can simply run `$ sudo bash restart.sh` anytime you make or pull changes.
+
+</details>
