@@ -70,7 +70,13 @@ View these common tips and tricks to make your setup experience a little less pa
         `$ sudo systemctl restart nginx`
 
 3. Permission denied (Error 13) for *.sock
-    - This is usually a permission error. Check out this [Stack Overflow article](https://stackoverflow.com/questions/22071681/permission-denied-nginx-and-uwsgi-socket).
+    - This is usually a permission error. Check out this [Stack Overflow article](https://stackoverflow.com/questions/23948527/13-permission-denied-while-connecting-to-upstreamnginx/24830777#24830777) for troubleshooting this error. This article appears have the more widely accepted solution. NOTE: you must be logged in as root to execute
+    
+        `$ setsebool -P httpd_can_network_connect 1`
+    
+        (i.e. the accepted solution by joebarbere).
+    
+    - Check out this other [Stack Overflow article](https://stackoverflow.com/questions/22071681/permission-denied-nginx-and-uwsgi-socket) if further troubleshooting is required.
 
 4. Troubleshooting 500 Internal Server Error
     - Check out this [Digital Ocean discussion](https://www.digitalocean.com/community/questions/500-internal-server-error-in-my-site) to troubleshoot a 500 Internal Server Error.
@@ -87,23 +93,29 @@ View these common tips and tricks to make your setup experience a little less pa
 <summary>Useful shell commands</summary>
 <br>
 
-1. `$ tail -30 /var/log/nginx/error.log`
+1. `$ sudo su -`
+    - Log in as root from a sudo-user ssh session. Root password is required.
+
+2. `$ sudo su - user`
+    - Log in as `user` from a sudo-user ssh session. `user` password is required.
+
+3. `$ tail -30 /var/log/nginx/error.log`
     - Check the last 30 lines of your Nginx error log.
 
-2. `$ journalctl -xe`
+4. `$ journalctl -xe`
     - Check Python trace through the system journal. Very useful for troubleshooting faulty applictaion code.
 
-3. `$ sudo systemctl restart nginx`
+5. `$ sudo systemctl restart nginx`
     - Restart your Nginx server.
 
-4. `$ sudo systemctl enable nginx`
+6. `$ sudo systemctl enable nginx`
     - Enable your Nginx server to start if server undergoes reboot.
 
-5. `$ sudo systemctl restart pweb2`
+7. `$ sudo systemctl restart pweb2`
     - Restart your Flask application. Must run if you make changes to your app.
     - Run this command if you make changes to `*.ini`, `*.sock`, and `*.system`.
 
-6. `$ sudo systemctl enable pweb2`
+8. `$ sudo systemctl enable pweb2`
     - Enable your Flask application to start if server undergoes reboot.
 
 </details>
