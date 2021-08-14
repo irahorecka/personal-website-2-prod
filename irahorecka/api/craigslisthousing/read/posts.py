@@ -60,7 +60,8 @@ def filter_query(model, validated_args):
     """Returns filtered db.Model.query object to caller, filtered by arguments in `validated_args`."""
     # If an ID was provided in the query, return post with ID immediately.
     if validated_args.get("id"):
-        return tuple(model.query.get(validated_args["id"]))
+        # Not optimal in performance, but conforms to datatype of non-id-based queries.
+        return model.query.filter(model.id == validated_args["id"])
     query = filter_categorical(model, model.query, validated_args)
     return filter_scalar(model, query, validated_args)
 
