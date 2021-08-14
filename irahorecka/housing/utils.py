@@ -21,9 +21,9 @@ def get_neighborhoods(key):
     return NEIGHBORHOODS.get(key, tuple())
 
 
-def get_score_attr(score):
-    """Gets score class (CSS) and score letter from score provided by caller. Take a look at
-    irahorecka/static/css/dist/style.css to view these classes. This function assumes
+def get_score_class_and_letter(score):
+    """Gets score class (CSS) and score letter from numeric score provided by caller. Take a
+    look at irahorecka/static/css/dist/style.css to view these classes. This function assumes
     a score will range from -100 to 100."""
     if score >= 60:
         if score > 86.6:
@@ -64,7 +64,7 @@ def tidy_posts(posts):
     """Tidies an iterable of posts provided by caller. Currently the only tidiness is
     adding score color and letter based on the provided score."""
     for post in posts:
-        post["score_class"], post["score_letter"] = get_score_attr(post["score"])
+        post["score_class"], post["score_letter"] = get_score_class_and_letter(post["score"])
     return posts
 
 
