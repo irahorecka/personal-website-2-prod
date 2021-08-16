@@ -1,4 +1,6 @@
 # pweb2
+[![Website irahorecka.com](https://img.shields.io/website-up-down-green-red/https/irahorecka.com.svg)](https://irahorecka.com/)
+
 Production setup of my personal website. Check it out here: [irahorecka.com](https://irahorecka.com).
 
 This application is written in Python using the Flask framework. The frontend is comprised of HTML (with web templating engine Jinja2), simple jQuery, and Tailwind CSS. This repository is configured for a production environment.
@@ -55,7 +57,7 @@ View these common tips and tricks to make your setup experience a little less pa
         to allow access to your application from the world wide web.
 
 2. Bad Gateway Error (502)
-    - If by the end of your setup you receive a bad gateway error, try running the following commands:
+    - If by the end of your setup you receive a bad gateway error, try running the following commands if you plan to have SELinux enabled:
 
         `$ sudo setenforce 0`
 
@@ -69,8 +71,10 @@ View these common tips and tricks to make your setup experience a little less pa
 
         `$ sudo systemctl restart nginx`
 
+    - If you plan to have SELinux disabled, follow Jonny's advice on this [Stack Overflow article](https://stackoverflow.com/questions/17079670/httpd-server-not-started-13permission-denied-make-sock-could-not-bind-to-ad) to disable SELinux. With SELinux enabled, using `$ sudo setenforce 0` alleviates this issue, albeit temporarily (at least in my experience).
+
 3. Permission denied (Error 13) for *.sock
-    - This is usually a permission error. Check out this [Stack Overflow article](https://stackoverflow.com/questions/23948527/13-permission-denied-while-connecting-to-upstreamnginx/24830777#24830777) for troubleshooting this error. This article appears have the more widely accepted solution. NOTE: you must be logged in as root to execute
+    - Ties closely with error 502 (above). This is usually a permission error. Check out this [Stack Overflow article](https://stackoverflow.com/questions/23948527/13-permission-denied-while-connecting-to-upstreamnginx/24830777#24830777) for troubleshooting this error. This article appears have the more widely accepted solution. NOTE: you must be logged in as root to execute
     
         `$ setsebool -P httpd_can_network_connect 1`
     
