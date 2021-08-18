@@ -5,7 +5,7 @@
 Flask blueprint to handle errors.
 """
 
-from flask import abort, request, render_template, Blueprint
+from flask import request, render_template, Blueprint
 
 from irahorecka.exceptions import InvalidUsage
 
