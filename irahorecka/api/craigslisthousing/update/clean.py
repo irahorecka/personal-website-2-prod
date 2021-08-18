@@ -13,6 +13,7 @@ import cchardet
 import lxml
 import httpx
 from bs4 import BeautifulSoup, SoupStrainer
+from sqlalchemy.sql import func, and_
 
 from irahorecka.models import db, CraigslistHousing
 
@@ -20,16 +21,20 @@ from irahorecka.models import db, CraigslistHousing
 def clean_craigslist_housing():
     """ENTRY POINT: Cleans Craigslist housing database table. To be ran after every
     write to database with new Craigslist housing posts."""
-    # Tack on more functions as you see fit.
+    # Tack on more functions as you see fit. The order of function calls should not be order-dependent.
     rm_old_posts()
     rm_duplicate_posts()
-    rm_low_prices()
+    rm_scam_warning_posts()
+    rm_private_bedrooms_posts()
+    rm_low_price_posts()
 
 
 def rm_old_posts(days=7):
     """Removes posts where `CraigslistHousing.last_updated` is over `days` days old."""
     lower_dttm_threshold = datetime.datetime.now() - datetime.timedelta(days=days)
-    CraigslistHousing.query.filter(CraigslistHousing.last_updated < lower_dttm_threshold).delete()
+    CraigslistHousing.query.filter(CraigslistHousing.last_updated < lower_dttm_threshold).delete(
+        synchronize_session="fetch"
+    )
     db.session.commit()
 
 
@@ -45,9 +50,26 @@ def rm_duplicate_posts():
     db.session.commit()
 
 
-def rm_low_prices():
-    """Removes posts where `price` is less than 300 USD."""
-    CraigslistHousing.query.filter(CraigslistHousing.price < 300).delete()
+def rm_scam_warning_posts():
+    """Removes posts where 'scam' is in the post title (case-insensitive). These posts usually warn
+    buyers of scammy Craigslist posts."""
+    CraigslistHousing.query.filter(func.lower(CraigslistHousing.title).contains("scam")).delete(
+        synchronize_session="fetch"
+    )
+    db.session.commit()
+
+
+def rm_private_bedrooms_posts():
+    """Removes housing posts where price / bedrooms <= 600 USD. Studio posts (i.e. bedrooms == 0)
+    are ignored."""
+    posts = CraigslistHousing.query.filter(and_(CraigslistHousing.price > 0, CraigslistHousing.bedrooms > 0))
+    posts.filter(CraigslistHousing.price / CraigslistHousing.bedrooms <= 600).delete(synchronize_session="fetch")
+    db.session.commit()
+
+
+def rm_low_price_posts():
+    """Removes posts where `price` is less than 700 USD."""
+    CraigslistHousing.query.filter(CraigslistHousing.price < 700).delete(synchronize_session="fetch")
     db.session.commit()
 
 
@@ -66,7 +88,7 @@ def rm_expired_craigslist_housing():
     # Dispatch tasks to multiple threads.
     for post in map_threads(post_is_expired, args):
         if post["is_expired"]:
-            CraigslistHousing.query.filter(CraigslistHousing.id == post["id"]).delete()
+            CraigslistHousing.query.filter(CraigslistHousing.id == post["id"]).delete(synchronize_session="fetch")
 
     db.session.commit()
 

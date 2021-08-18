@@ -94,9 +94,9 @@ def yield_apa(site, areas):
 
 def yield_apa_filters():
     """Yields `pycraigslist.housing.apa` filters for subsequent queries."""
-    # Only filter for prices, ranging from $0 - $8000 in $500 increments to gain more listing coverage.
+    # Only filter for prices, ranging from $500 - $8000 in $500 increments to gain more listing coverage.
     # Craigslist limits number of posts to 3000 for any given query.
     yield from [
         {"min_price": min_price, "max_price": max_price}
-        for min_price, max_price in zip(range(0, 8000, 500), range(500, 8500, 500))
+        for min_price, max_price in zip(range(500, 8000, 500), range(1000, 8500, 500))
     ]
