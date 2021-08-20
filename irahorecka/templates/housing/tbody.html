@@ -1,0 +1,18 @@
+{% for post in content.posts %}
+{% if loop.last %}
+<tr hx-get="/housing/query/infinite-scroll?offset={{ content.offset }}&sort_by={{ content.sort_by }}&query_params={{ content.query_params }}" hx-trigger="intersect" hx-swap="afterend" class="bg-white lg:hover:bg-gray-100 flex flex-no-wrap flex-row table-row">
+{% else %}
+<tr class="bg-white lg:hover:bg-gray-100 flex flex-no-wrap flex-row table-row">
+{% endif %}
+  <td class="text-xs sm:text-base w-full p-3 text-gray-800 text-left border border-b block table-cell static"><a href="{{ post.url }}" class="break-words text-blue-600 hover:text-blue-800" rel="noopener noreferrer" target="_blank" onclick="this.blur();">{{ post.title }}</a></td>
+  <td class="text-xs sm:text-base w-full p-3 text-gray-800 text-center border border-b block table-cell static">{{ post.price }}</td>
+  {% if post.bedrooms == 0 %}
+  <td class="text-xs sm:text-base w-full p-3 text-gray-800 text-center border border-b block table-cell static">-</td>
+  {% else %}
+  <td class="text-xs sm:text-base w-full p-3 text-gray-800 text-center border border-b block table-cell static">{{ post.bedrooms }}</td>
+  {% endif %}
+  <td class="text-xs sm:text-base w-full p-3 text-gray-800 text-center border border-b block table-cell static">
+    <span class="rounded {{ post.score_class }} border py-1 px-3 text-xs font-bold">{{ post.score_letter }}</span>
+  </td>
+</tr>
+{% endfor %}

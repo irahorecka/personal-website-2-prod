@@ -5,6 +5,7 @@
 Flask blueprint to handle routes for *.irahorecka.com/housing*.
 """
 
+import ast
 from datetime import datetime
 from pathlib import Path
 
@@ -49,27 +50,62 @@ def neighborhoods():
 @housing.route("/housing/query/new", methods=["POST"])
 def query_new():
     """Handles rendering of template from HTMX call to /housing/query/new.
-    Returned content sorted by newest posts."""
-    parsed_params = parse_req_form(request.form)
+    Returns Craigslist Housing content sorted by newest posts."""
+    query_params = parse_req_form(request.form)
+    limit = 50
+    offset = 0
+    sort_by = "date_desc"
     # Fetch minified posts - don't need all that info.
-    posts = list(read_craigslist_housing(parsed_params, minified=True))
-    return render_template(
-        "housing/table.html",
-        posts=sorted(
-            tidy_posts(posts), key=lambda x: datetime.strptime(x["last_updated"], "%Y-%m-%d %H:%M"), reverse=True
-        ),
-    )
+    posts = list(read_craigslist_housing(query_params, sort_by=sort_by, limit=limit, minified=True))
+    content = {
+        "posts": tidy_posts(posts),
+        "query_params": query_params,
+        "sort_by": sort_by,
+        "offset": offset,
+    }
+    return render_template("housing/table.html", content=content)
 
 
 @housing.route("/housing/query/score", methods=["POST"])
 def query_score():
     """Handles rendering of template from HTMX call to /housing/query/score.
-    Returned content sorted by score value."""
-    parsed_params = parse_req_form(request.form)
-    posts = list(read_craigslist_housing(parsed_params, minified=True))
-    return render_template(
-        "housing/table.html", posts=sorted(tidy_posts(posts), key=lambda x: x["score"], reverse=True)
+    Returns Craigslist Housing content sorted by score value."""
+    query_params = parse_req_form(request.form)
+    limit = 50
+    offset = 0
+    sort_by = "score_desc"
+    posts = list(read_craigslist_housing(query_params, sort_by=sort_by, limit=limit, minified=True))
+    content = {
+        "posts": tidy_posts(posts),
+        "query_params": query_params,
+        "sort_by": sort_by,
+        "offset": offset,
+    }
+    return render_template("housing/table.html", content=content)
+
+
+@housing.route("/housing/query/infinite-scroll")
+def query_infinite_scroll():
+    """Handles rendering of template from HTMX call to /housing/query/infinite-scroll.
+    Returns chunked Craigslist Housing content as table rows with number of rows equivalent
+    to the 'limit' parameter passed from `query_new` or `query_score`."""
+    params = request.args.to_dict()
+    # Original query params provided by caller.
+    query_params = ast.literal_eval(params["query_params"])
+    limit = int(query_params["limit"])
+    offset = int(params["offset"]) + 1
+    sort_by = params["sort_by"]
+    # Get next set of housing posts.
+    posts = list(
+        read_craigslist_housing(query_params, sort_by=sort_by, limit=limit, offset=limit * offset, minified=True)
     )
+    content = {
+        "posts": tidy_posts(posts),
+        "query_params": query_params,
+        "sort_by": sort_by,
+        "offset": offset,
+    }
+    return render_template("housing/tbody.html", content=content)
 
 
 #  ~~~~~~~~~~ BEGIN RESTFUL API AND API DOCS ~~~~~~~~~~
