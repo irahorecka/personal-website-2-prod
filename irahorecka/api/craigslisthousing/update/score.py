@@ -33,8 +33,8 @@ def write_craigslist_housing_score(site, areas):
         # Calculate score for posts with price without ft2.
         with Bedrooms(CraigslistHousing, query_site, query_area) as bedrooms:
             bedrooms.write_score(query_area_sans_ft2)
-        # Posts without ft2 have scores not as influential as posts with ft2 - set range to -80, 80.
-        normalize_score(CraigslistHousing, query_area_sans_ft2, -80, 80)
+        # Posts without ft2 have scores not as influential as posts with ft2 - set range to -90, 90.
+        normalize_score(CraigslistHousing, query_area_sans_ft2, -90, 90)
 
     # Set null scores to 0 to maintain constant numeric datatype.
     query_site.filter(CraigslistHousing.score.is_(None)).update({CraigslistHousing.score: 0})
