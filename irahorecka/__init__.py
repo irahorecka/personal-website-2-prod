@@ -29,7 +29,8 @@ def create_app(config_class=Config):
 
     limiter.init_app(application)
     limiter.limit("200/day")(main)
-    limiter.limit("200/day")(housing)
+    # Housing widget makes multiple requests when lazy loading table contents. Increase limit.
+    limiter.limit("1000/day")(housing)
     application.register_blueprint(main)
     application.register_blueprint(housing)
     application.register_blueprint(errors)
