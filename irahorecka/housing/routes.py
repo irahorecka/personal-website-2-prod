@@ -50,20 +50,10 @@ def query_new():
     """Handles rendering of template from HTMX call to /housing/query/new.
     Returns Craigslist Housing content sorted by newest posts."""
     query_params = session["query_params"] = parse_form(request.form)
+    sort_by = session["sort_by"] = "date_desc"
     limit = session["limit"] = 50
     offset = session["offset"] = 0
-    sort_by = session["sort_by"] = "date_desc"
-    # Fetch minified posts - don't need all that info.
-    posts = list(
-        read_craigslist_housing(query_params.copy(), sort_by=sort_by, limit=limit, offset=offset, minified=True)
-    )
-    content = {
-        "posts": tidy_posts(posts),
-        "limit": limit,
-        "offset": offset,
-        "sort_by": sort_by,
-    }
-    return render_template("housing/table.html", content=content)
+    return render_housing_table("housing/table.html", query_params, sort_by, limit, offset)
 
 
 @housing.route("/housing/query/score", methods=["POST"])
@@ -71,19 +61,10 @@ def query_score():
     """Handles rendering of template from HTMX call to /housing/query/score.
     Returns Craigslist Housing content sorted by score value."""
     query_params = session["query_params"] = parse_form(request.form)
+    sort_by = session["sort_by"] = "score_desc"
     limit = session["limit"] = 50
     offset = session["offset"] = 0
-    sort_by = session["sort_by"] = "score_desc"
-    posts = list(
-        read_craigslist_housing(query_params.copy(), sort_by=sort_by, limit=limit, offset=offset, minified=True)
-    )
-    content = {
-        "posts": tidy_posts(posts),
-        "limit": limit,
-        "offset": offset,
-        "sort_by": sort_by,
-    }
-    return render_template("housing/table.html", content=content)
+    return render_housing_table("housing/table.html", query_params, sort_by, limit, offset)
 
 
 @housing.route("/housing/query/infinite-scroll")
@@ -96,7 +77,13 @@ def query_infinite_scroll():
     limit = session["limit"]
     offset = session["offset"] = session["limit"] + session["offset"]
     sort_by = session["sort_by"]
-    # Get next set of housing posts.
+    return render_housing_table("housing/tbody.html", query_params, sort_by, limit, offset)
+
+
+def render_housing_table(html_path, query_params, sort_by, limit, offset):
+    """Fetches caller's query from the CraigslistHousing table in database and renders and
+    updates housing table from the provided HTML path."""
+    # Fetches minified posts.
     posts = list(read_craigslist_housing(query_params, sort_by=sort_by, limit=limit, offset=offset, minified=True))
     content = {
         "posts": tidy_posts(posts),
@@ -104,7 +91,7 @@ def query_infinite_scroll():
         "offset": offset,
         "sort_by": sort_by,
     }
-    return render_template("housing/tbody.html", content=content)
+    return render_template(html_path, content=content)
 
 
 #  ~~~~~~~~~~ BEGIN RESTFUL API AND API DOCS ~~~~~~~~~~
