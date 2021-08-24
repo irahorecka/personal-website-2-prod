@@ -1,6 +1,6 @@
 {% for post in content.posts %}
 {% if loop.last %}
-<tr hx-get="/housing/query/infinite-scroll?offset={{ content.offset }}&sort_by={{ content.sort_by }}&query_params={{ content.query_params }}" hx-trigger="intersect threshold:0" hx-swap="afterend" class="bg-white lg:hover:bg-gray-100 flex flex-no-wrap flex-row table-row">
+<tr hx-get="/housing/query/infinite-scroll" hx-trigger="intersect threshold:0" hx-swap="afterend" class="bg-white lg:hover:bg-gray-100 flex flex-no-wrap flex-row table-row">
 {% else %}
 <tr class="bg-white lg:hover:bg-gray-100 flex flex-no-wrap flex-row table-row">
 {% endif %}

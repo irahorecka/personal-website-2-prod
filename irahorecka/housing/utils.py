@@ -52,7 +52,7 @@ def get_score_class_and_letter(score):
     return "score-grade-F", "F"
 
 
-def parse_req_form(request_form):
+def parse_form(request_form):
     """Parses request form provided by caller and returns parameters dict."""
     params = {key: value.lower() for key, value in request_form.items() if value and value not in ["-"]}
     if params.get("area"):

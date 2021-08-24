@@ -5,11 +5,9 @@
 Flask blueprint to handle routes for *.irahorecka.com/housing*.
 """
 
-import ast
-from datetime import datetime
 from pathlib import Path
 
-from flask import abort, jsonify, render_template, request, Blueprint
+from flask import abort, jsonify, render_template, request, session, Blueprint
 
 from irahorecka import limiter
 from irahorecka.api import read_craigslist_housing, AREAS
@@ -17,7 +15,7 @@ from irahorecka.exceptions import ValidationError
 from irahorecka.housing.utils import (
     get_area_key,
     get_neighborhoods,
-    parse_req_form,
+    parse_form,
     read_json,
     tidy_posts,
 )
@@ -51,17 +49,19 @@ def neighborhoods():
 def query_new():
     """Handles rendering of template from HTMX call to /housing/query/new.
     Returns Craigslist Housing content sorted by newest posts."""
-    query_params = parse_req_form(request.form)
-    limit = 50
-    offset = 0
-    sort_by = "date_desc"
+    query_params = session["query_params"] = parse_form(request.form)
+    limit = session["limit"] = 50
+    offset = session["offset"] = 0
+    sort_by = session["sort_by"] = "date_desc"
     # Fetch minified posts - don't need all that info.
-    posts = list(read_craigslist_housing(query_params, sort_by=sort_by, limit=limit, minified=True))
+    posts = list(
+        read_craigslist_housing(query_params.copy(), sort_by=sort_by, limit=limit, offset=offset, minified=True)
+    )
     content = {
         "posts": tidy_posts(posts),
-        "query_params": query_params,
-        "sort_by": sort_by,
+        "limit": limit,
         "offset": offset,
+        "sort_by": sort_by,
     }
     return render_template("housing/table.html", content=content)
 
@@ -70,16 +70,18 @@ def query_new():
 def query_score():
     """Handles rendering of template from HTMX call to /housing/query/score.
     Returns Craigslist Housing content sorted by score value."""
-    query_params = parse_req_form(request.form)
-    limit = 50
-    offset = 0
-    sort_by = "score_desc"
-    posts = list(read_craigslist_housing(query_params, sort_by=sort_by, limit=limit, minified=True))
+    query_params = session["query_params"] = parse_form(request.form)
+    limit = session["limit"] = 50
+    offset = session["offset"] = 0
+    sort_by = session["sort_by"] = "score_desc"
+    posts = list(
+        read_craigslist_housing(query_params.copy(), sort_by=sort_by, limit=limit, offset=offset, minified=True)
+    )
     content = {
         "posts": tidy_posts(posts),
-        "query_params": query_params,
-        "sort_by": sort_by,
+        "limit": limit,
         "offset": offset,
+        "sort_by": sort_by,
     }
     return render_template("housing/table.html", content=content)
 
@@ -89,21 +91,18 @@ def query_infinite_scroll():
     """Handles rendering of template from HTMX call to /housing/query/infinite-scroll.
     Returns chunked Craigslist Housing content as table rows with number of rows equivalent
     to the 'limit' parameter passed from `query_new` or `query_score`."""
-    params = request.args.to_dict()
-    # Original query params provided by caller.
-    query_params = ast.literal_eval(params["query_params"])
-    limit = int(query_params["limit"])
-    offset = int(params["offset"]) + 1
-    sort_by = params["sort_by"]
+    # Parameters from Flask session.
+    query_params = session["query_params"]
+    limit = session["limit"]
+    offset = session["offset"] = session["limit"] + session["offset"]
+    sort_by = session["sort_by"]
     # Get next set of housing posts.
-    posts = list(
-        read_craigslist_housing(query_params, sort_by=sort_by, limit=limit, offset=limit * offset, minified=True)
-    )
+    posts = list(read_craigslist_housing(query_params, sort_by=sort_by, limit=limit, offset=offset, minified=True))
     content = {
         "posts": tidy_posts(posts),
-        "query_params": query_params,
-        "sort_by": sort_by,
+        "limit": limit,
         "offset": offset,
+        "sort_by": sort_by,
     }
     return render_template("housing/tbody.html", content=content)
 

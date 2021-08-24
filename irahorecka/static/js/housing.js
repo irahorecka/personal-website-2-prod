@@ -1,18 +1,21 @@
 $(document).ready(function() {
     // Prepend blank '-' option in #area - allows site-wide search
     $('#area').prepend('<option>-</option>');
-    // Show load icon during ajax call.
+    // NOTE: you'll see two equivalent POST requests being made to Flask routes that are
+    // triggered by #query-new and #query-score. The first is from `hx-post` and the second
+    // is from the AJAX event handler below.
     $("#query-new, #query-score").click(function(e) {
         e.preventDefault();
-        var data = $(this).serialize();
         var url = $(this).attr('hx-post');
+        var data = $('form').serialize();
+        // Show load icon during AJAX call.
         // Will not display if screen size is for mobile / small.
         if ($(window).width() >= 768) {
             $loading.fadeIn(150);
         };
         $.post(url, data, function(response){
             $loading.fadeOut(150);
-            // Scroll to bottom of page.
+            // Diminish load icon during AJAX call. Scroll to bottom of page.
             $("html, body").animate({ scrollTop: document.body.scrollHeight }, "slow");
         });
     });
