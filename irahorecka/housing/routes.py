@@ -132,7 +132,7 @@ def api_site_area(site, area):
 def docs():
     """Documentation page for the housing API."""
     content = {
-        "title": "API Documentation: Housing",
+        "title": "API Docs: Housing",
         "profile_img": "me-arrow.png",
         "docs": DOCS,
     }
