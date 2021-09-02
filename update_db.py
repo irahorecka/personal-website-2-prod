@@ -12,5 +12,7 @@ application = create_app()
 
 if __name__ == "__main__":
     update_github(application)
-    update_housing(application)
-    update_housing_score(application)
+    # Due to Craigslist's recent policy changes, I will not scrape nor score
+    # new Craigslist housing posts.
+    # update_housing(application)
+    # update_housing_score(application)
