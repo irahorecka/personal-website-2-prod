@@ -11,4 +11,7 @@ from scripts.db import rm_expired_housing
 application = create_app()
 
 if __name__ == "__main__":
-    rm_expired_housing(application)
+    # Due to Craigslist's recent policy changes, I will not remove
+    # expired housing posts for archiving purposes.
+    # rm_expired_housing(application)
+    pass
