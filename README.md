@@ -90,6 +90,8 @@ View these common tips and tricks to make your setup experience a little less pa
     - (Optional) Make sure to delete exported environment variables configured in your system.
         `$ unset YOUR_ENV_VARIABLE`
     
+6. Server is slow to load content
+    - Check out this [Digital Ocean discussion](https://www.digitalocean.com/community/questions/extremely-slow-server-almost-halting-all-requests-load-average-5). There could be multiple processes that are being created but not being stopped; e.g., SYN requests that are not closing up.
 
 </details>
 
