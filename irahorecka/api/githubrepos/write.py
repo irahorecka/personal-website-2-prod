@@ -11,7 +11,7 @@ import time
 from requests.exceptions import ConnectionError
 
 from github import Github
-from github.GithubException import GithubException
+from github.GithubException import GithubException, UnknownObjectException
 
 from irahorecka.models import db, GitHubRepo, RepoLanguage
 
@@ -83,6 +83,11 @@ def fetch_repos(access_token):
 
 def build_repo_dict(repo):
     """Isolates desired properties of a GitHub repository."""
+    try:
+        # Raises `GithubException` if the git repository is empty.
+        commits = len(list(validate_gh_method(repo.get_commits)))
+    except GithubException:
+        commits = 0
     return {
         "name": repo.full_name.split("/")[-1],
         "full_name": repo.full_name,
@@ -93,7 +98,7 @@ def build_repo_dict(repo):
         "private": repo.private,
         "stars": repo.stargazers_count,
         "forks": repo.forks_count,
-        "commits": len(list(validate_gh_method(repo.get_commits))),
+        "commits": commits,
         "open_issues": repo.open_issues_count,
         "languages": validate_gh_method(get_languages, repo) if validate_gh_method(get_languages, repo) != "" else "",
         "url": f"https://github.com/{repo.full_name}",
@@ -105,7 +110,7 @@ def validate_gh_method(method, *args, **kwargs):
     raises an exception."""
     try:
         return method(*args, **kwargs)
-    except GithubException:
+    except UnknownObjectException:
         return ""
 
 
