@@ -11,7 +11,7 @@ import time
 from requests.exceptions import ConnectionError
 
 from github import Github
-from github.GithubException import UnknownObjectException
+from github.GithubException import GithubException
 
 from irahorecka.models import db, GitHubRepo, RepoLanguage
 
@@ -105,7 +105,7 @@ def validate_gh_method(method, *args, **kwargs):
     raises an exception."""
     try:
         return method(*args, **kwargs)
-    except UnknownObjectException:
+    except GithubException:
         return ""
 
 
