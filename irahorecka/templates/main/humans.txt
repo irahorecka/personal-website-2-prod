@@ -1,0 +1,9 @@
+/* TEAM */
+  Creator, designer, and developer: Ira Horecka
+  Contact: ira.horecka [at] yahoo.com
+  Website: irahorecka.com
+  From: Toronto, Ontario, Canada
+
+/* SITE */
+  Language: English
+  Doctype: HTML5
