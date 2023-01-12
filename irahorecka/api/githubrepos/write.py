@@ -6,6 +6,7 @@ Module to write and update GitHub repositories database table.
 """
 
 import concurrent.futures
+import random
 import time
 
 from requests.exceptions import ConnectionError
@@ -45,6 +46,8 @@ def write_github_repos(github_token):
     if not repos:
         return
     for repo in repos:
+        # Add random latency to prevent `github.GithubException.RateLimitExceededException`
+        time.sleep(random.randint(1, 3))
         repo_entry = GitHubRepo(
             name=repo["name"],
             full_name=repo["full_name"],
