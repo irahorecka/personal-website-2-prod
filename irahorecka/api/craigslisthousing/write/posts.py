@@ -9,7 +9,7 @@ import time
 from datetime import datetime
 
 import pycraigslist
-from pycraigslist.exceptions import MaximumRequestsError
+from pycraigslist.exceptions import ConnectionError
 from sqlalchemy import exc
 
 from irahorecka.models import db, CraigslistHousing
@@ -84,10 +84,10 @@ def yield_apa(site, areas):
             ]
             # Break out if successfully executed.
             return
-        except MaximumRequestsError:
+        except ConnectionError:
             if i == 3:
                 # Raise error if error cannot be resolved in 3 attempts.
-                raise MaximumRequestsError from MaximumRequestsError
+                raise ConnectionError from ConnectionError
             # Wait a minute before reattempting query.
             time.sleep(60)
 
