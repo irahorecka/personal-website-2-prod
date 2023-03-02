@@ -6,7 +6,7 @@
     <meta name="description" content="Ira Horecka's website">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'>
     <link rel="icon" href="{{ url_for('static', filename="images/hand-lizard-o.png") }}" title="GitHub">
-    <link rel="preload" as="image" href="{{ url_for('static', filename=['images/{}'.format(content.profile_img)]) }}">
+    <link rel="preload" as="image" href="{{ url_for('static', filename='images/{}'.format(content.profile_img)) }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dist/cards.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dist/main.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dist/nav.min.css') }}">
@@ -47,7 +47,7 @@
     <div class="header-space"></div>
     <div class="container px-8 pt-8 pb-16 m-auto mt-0 lg:mt-16 flex flex-col lg:flex-row">
       <div class="flex flex-row lg:flex-col content-between w-32 lg:w-48 mt-0 lg:mr-16">
-        <img src="{{ url_for('static', filename=['images/{}'.format(content.profile_img)]) }}" class="p-1 border-1 w-32 xl:w-48 h-32 xl:h-48 rounded-full shadow-lg">
+        <img src="{{ url_for('static', filename='images/{}'.format(content.profile_img)) }}" class="p-1 border-1 w-32 xl:w-48 h-32 xl:h-48 rounded-full shadow-lg">
         <div class="text-left text-base m-auto lg:mt-9 ml-6 lg:ml-2">
           <ul class="font-medium">
             <li><p class="text-gray-500 mb-1 lg:mb-3 w-32 md:w-48 lg:w-full">Student</p></li>
