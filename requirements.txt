@@ -10,5 +10,5 @@ pycraigslist
 numpy
 requests
 psycopg2-binary
-uwsgi
+pyuwsgi
 python-dotenv
