@@ -39,6 +39,14 @@ def projects():
     return render_template("main/projects.html", content=content)
 
 
+@main.route("/easteregg.txt")
+def easteregg_txt():
+    """Easter egg text page of personal website."""
+    with open(TEMPLATES_MAIN_PATH / "easteregg.txt", "r") as f:
+        content = f.read()
+    return Response(content, content_type="text/plain")
+
+
 @main.route("/humans.txt")
 def humans_txt():
     """humans.txt page of personal website."""
