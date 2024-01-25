@@ -9,7 +9,7 @@ import concurrent.futures
 import random
 import time
 
-from requests.exceptions import ConnectionError
+from requests.exceptions import HTTPError
 
 from github import Github
 from github.GithubException import GithubException, UnknownObjectException
@@ -76,10 +76,10 @@ def fetch_repos(access_token):
     for i in range(4):
         try:
             return [repo for repo in map_threads(build_repo_dict, repos) if repo is not None]
-        except ConnectionError:
+        except HTTPError:
             if i == 3:
                 # Raise error if error cannot be resolved in 3 attempts.
-                raise ConnectionError from ConnectionError
+                raise HTTPError from HTTPError
             # Wait a minute before reattempting query.
             time.sleep(60)
 
