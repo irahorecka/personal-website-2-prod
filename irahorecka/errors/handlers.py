@@ -59,7 +59,7 @@ def error_429(error):
     """Error: Too Many Requests"""
     content = {
         "title": "Error 429",
-        "profile_img": "hit-the-sack.jpeg",
+        "profile_img": "trevor.jpeg",
     }
     return render_template("errors/429.html", content=content), 429
 

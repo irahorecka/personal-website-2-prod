@@ -30,7 +30,7 @@ def index():
     """Landing page of irahorecka.com/housing."""
     content = {
         "title": "Housing",
-        "profile_img": "me-arrow.png",
+        "profile_img": "me_arrow.png",
         "area": AREAS,
     }
     return render_template("housing/index.html", content=content)
@@ -133,7 +133,7 @@ def docs():
     """Documentation page for the housing API."""
     content = {
         "title": "API Docs: Housing",
-        "profile_img": "me-arrow.png",
+        "profile_img": "me_arrow.png",
         "docs": DOCS,
     }
     return render_template("housing/docs.html", content=content)

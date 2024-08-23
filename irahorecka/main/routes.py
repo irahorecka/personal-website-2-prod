@@ -33,7 +33,7 @@ def projects():
     """GitHub projects page of personal website."""
     content = {
         "title": "Projects",
-        "profile_img": "me-computing.png",
+        "profile_img": "me_computing.png",
         "repos": read_github_repos(GITHUB_REPOS),
     }
     return render_template("main/projects.html", content=content)
